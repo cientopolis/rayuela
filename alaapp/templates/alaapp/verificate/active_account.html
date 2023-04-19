@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>X | Cuenta activada</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a href="{% static 'index2.html' %}"><b>{{ settings.PROJECT_TITLE }}</a>
+  </div>
+
+  <div class="card">
+  
+        <div class="container">
+                              
+                    <div class="card-body">
+                   
+                        <div class="alert alert-success alert-dismissible mt-3">
+                    
+                            <h5><i class="icon fas fa-check"></i>Éxito</h5>
+                            ¡Su cuenta ha sido activada!
+                        </div>
+                        
+                          <a  href="/" class="text-center">Iniciar sesión</a>
+
+                        
+                    </div>
+        </div>
+</div>
+     
+
+
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js'%}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalTitle"></h5>
+  
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+      
+        <div class="modal-body">
+          <form id="send_project_"  method="POST" action="/view_game_elements/"   > {% csrf_token %}
+            <input type='hidden' class='id' name='id'></input>
+          </form>  
+          <div class="row">
+            <img class="project_img img-fluid" alt="Responsive image" />
+          </div>
+          <br />
+          <div class="row">
+            <p  class="description"></p>
+          </div>         
+        </div>        
+        <div class="modal-footer">            
+            <button  onclick="$.confirmation('#send_project_');" class="btn btn-primary">Ver progreso</button>        
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+  <!--  -->

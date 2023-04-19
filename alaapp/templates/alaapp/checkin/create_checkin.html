@@ -1,0 +1,102 @@
+{% extends 'alaapp/base/base.html' %}
+{% load static %}
+{% block title %}
+  Nuevo Checkin
+{% endblock %}
+{% block link %}   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+crossorigin=""/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/> {% endblock %}
+{% block content %}
+  <div class="col-md-6 mb-5 mt-0">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Realizar Checkin</h3>
+      </div>
+      <!-- /.card-header -->
+      <!-- form start -->
+      <form action="/process_checkin/" id="send" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+          <div class="col-12 col-md-12">
+            <label class="invalid-feedback d-block">
+              {% for message in messages %}
+                {% if message.tags == 'error' %}
+                  *{{ message }}
+                {% endif %}
+              {% endfor %}
+            </label>
+            <div class="form-group">
+              <label>Asignar al projecto</label>
+             
+              <select id="project" name="project" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" data-placeholder="Seleccionar projecto" style="width: 100%;" required>          
+                <option value='#'>--------</option>
+                {% for project in projects %}
+                <option  value='{{ project.id }}'>{{ project.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">¿Cuándo?</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+
+                  <span class="input-group-text">
+                    <i class="far fa-calendar-alt"></i>
+                  </span>
+                </div>
+                <input type="text" id="datetime" name="datetime"  class="form-control float-right">
+              </div>
+            </div>  
+
+            <div class="form-group">
+              <label for="exampleInputEmail1">¿Dónde?</label>
+              <div id="map" style="height: 180px !important"></div>
+            </div>
+            <input type="hidden" class="form-control"  id="lat" name="lat"   required />
+            <input type="hidden" class="form-control"  id="lon"  name="lon"  required />
+          
+            <div class="row justify-content-end">
+              <div class="cols-md-4">
+                <button id="my_coordinates" type="button" class="btn btn-block btn-info btn-sm"><i id='f_map' class="fas fa-map-marker-alt"></i> Obtener</button>
+              </div>
+  
+            </div>   
+          </div>        
+        </div>
+        <!-- /.card-body -->
+      </form>
+      <div class="card-footer">
+        <button onclick="$.confirmation(send);" class="btn btn-primary">Realizar CheckIn</button>
+      </div>
+   
+    </div>
+    {% for message in messages %}
+      {% if message.tags == 'success' %}
+        <div class="col-md-12 mb-1">
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="icon fas fa-check"></i>
+                {{ message|safe }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+     crossorigin=""></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+     <script src="{% static 'dist/js/datetime.js' %}"></script>
+<script src="{% static 'dist/js/map.js' %}"></script>
+<script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static '/dist/js/showconfirmation.js' %}"></script>
+{% endblock %}

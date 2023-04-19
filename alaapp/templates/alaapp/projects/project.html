@@ -1,0 +1,127 @@
+
+{% if request.session.role == 'ADMIN' %}
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalTitle"></h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+    
+      <div class="modal-body">
+        <div class="row">
+          <img class="project_img img-fluid" alt="Responsive image" />
+        </div>
+        <br />
+        <div class="row">
+          <p  class="description"></p>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <form action='/modify_project/' method='POST'> {% csrf_token %}
+          <input type='hidden' class='id' name='id'></input>
+          <button type="submit" class="btn btn-primary">Configurar</button>
+     
+        </form>
+        <form action='/game_elements_project/' method='POST'> {% csrf_token %}
+          <input type='hidden' class='id' name='id'></input>
+        <button class="btn btn-primary">Ver elementos de Juego</button>
+        </form>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    
+    </div>
+  </div>
+</div>
+<!--  -->
+
+{% else %}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalTitle"></h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+    <form action='/view_game_elements/' method='POST'> {% csrf_token %}
+      <div class="modal-body">
+        <div class="row">
+          <img class="project_img img-fluid" alt="Responsive image" />
+        </div>
+        <br />
+        <div class="row">
+          <p  class="description"></p>
+        </div>
+        <input type='hidden' class='id' name='id'></input>
+      </div>
+      <div class="modal-footer">        
+          <button type="submit" class="btn btn-primary">Ver elementos de juego</button>
+       
+        
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!--  -->
+
+
+{% endif %} 
+
+<div class="container">
+  <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
+  {% block content_header %}<h3>Mis últimos proyectos asignados</h3>{% endblock %}
+  <div class="card-group">
+    
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-{{ projects|length }}  mb-3">
+
+      {% for project in projects|slice:':4' %}
+        <div class="col">
+          <div class="card"  style="width: auto;height: 16rem;" >
+            <img src="{{ project.image.url }}" height="150rem;"   class="card-img-top" alt="Responsive image" />
+            <div class="card-body">
+              <h5 class="card-title"><strong>{{ project.name }}</strong></h5>
+
+              <p class="card-text">
+                <a href="javascript:;" onclick="showModal('{{ project.name }}','{{ project.description }}','{{ project.image.url }}','{{ project.id }}')">{{ project.description|truncatechars:30 }}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="row justify-content-center mb-3">
+    <div class="cols-1 cols-md-2 ">
+      {% if request.session.role == 'PLAYER' %}
+      <form action="/my_projects/" method="get">
+        {% endif %}
+        {% csrf_token %}
+        {% if projects|length == 4 %}
+        <button type="submit" class="btn btn-block bg-gradient-info">Ver más...</button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  
+</div>
+
+<script>
+  function showModal(name, description, image,id) {
+    $('#myModal .modal-title').html(name)
+    $('#myModal .project_img').attr('src', image)
+    $('#myModal .description').html(description)
+    $('#myModal .id').attr('value',id)
+    $('#myModal').modal()
+  }
+</script>
+
+

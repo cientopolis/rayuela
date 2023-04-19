@@ -1,0 +1,73 @@
+{% extends 'alaapp/base/base.html' %}
+{% load static %}
+{% block title %}
+  Nuevo Desafío
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-6 mb-5 mt-0">
+    
+<div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">Editar Perfil</h3>
+    </div>
+  
+    <form action="/process_edit_profile/" id="send" method="post" enctype="multipart/form-data">{% csrf_token %}
+      <div class="card-body">
+        <label class="invalid-feedback d-block">{% for message in messages %}{% if message.tags == 'error' %}*{{ message }}{% endif %}{% endfor %}</label>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Nuevo nombre</label> 
+            <input type="text" class="form-control" name="name" placeholder="Ingresar nuevo nombre" value='{{ request.session.complete_name }}' />
+          </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Nuevo email</label>
+          <input type="email" class="form-control" name="email" placeholder="Ingresar nuevo email" value='{{ request.session.email }}' />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Nueva contraseña</label>
+          <input type="password" class="form-control" name="password" placeholder="Ingrese contraseña"  placeholder="Password" value="valuedefault" />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Repetir nueva contraseña</label>
+          <input type="password" class="form-control" name="repeat_password" placeholder="Ingrese contraseña"  placeholder="Password" value="valuedefault" />
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Nueva imagen de perfil</label>
+            <input type="file" class="form-control-file" accept="image/*" name="profile_image" />
+          </div>
+        
+      </div>     
+    </form>
+    <div class="card-footer">
+        <button onclick="$.confirmation(send);"  class="btn btn-primary">Guardar cambios</button>
+    </div>
+  </div>
+    {% for message in messages %}
+      {% if message.tags == 'success' %}
+        <div class="col-md-12 mb-1">
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="icon fas fa-check"></i>
+                {{ message }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static '/dist/js/showconfirmation.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+
+
