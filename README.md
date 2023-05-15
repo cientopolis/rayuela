@@ -1,5 +1,5 @@
-# Proyecto del sistema ALA (Abstracción de Ludificación Adaptativa)
-
+# Plataforma Rayuela
+Esta plataforma propone un abordaje para incorporar ludificación adaptativa a proyectos de ciencia ciudadana
 
 ## Pre-requisitos 📋
 
