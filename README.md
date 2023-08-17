@@ -4,24 +4,61 @@ Esta plataforma propone un abordaje para incorporar ludificación adaptativa a p
 ## Pre-requisitos 📋
 
 * Python 3.8 (Se recomienda utilizar un entorno virtual)
-* Se debe crear un archivo .env con las variables para configurar el entorno.
+* Base de datos mysql (servidor y cliente)
+* Configurar el archivo .env con las variables para configurar:
+   * Acceso a la base de datos
+   * ??
 
-## Instalación 🔧
+## Instalación de dependencias 🔧
 
-* Para la instalación de todas las dependencias necesarias para el correcto funcionamiento del sistema se debe ejecutar 
-el siguiente comando:
-```pip install -r requirements.txt```
+Para la instalación de todas las dependencias necesarias se debe ejecutar el siguiente comando:
+```
+   pip install -r requirements.txt
+```
+Dependiendo del sistema, y en particular de la versión de Python que se esté usando, puede ocurrir que se necesiten algunas dependencias mas, entonces se debe editar el archivo manualmente y ejecutar nuevamente el comando anterior.
 
-* Ejecutar los siguientes comandos para realizar las migraciones de las tablas a la base de datos: 
+## Setup de la base de datos
+
+En primer lugar, se debe crear la base de datos y un primer super usuario *adminRayuela*:
+ 
+```
+sudo mysql -u root
+
+CREATE DATABASE rayuela;
+CREATE USER 'adminRayuela'@'localhost' IDENTIFIED BY 'changethisone';
+GRANT ALL ON rayuela.* TO 'adminRayuela'@'localhost';
+GRANT ALL ON test_rayuela.* TO 'adminRayuela'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+A continuación ejecutar los siguientes comandos para realizar las migraciones de las tablas a la base de datos: 
+
 ```
 python3 manage.py makemigrations
 python3 manage.py migrate
 ```
 
-* Ejecutar el siguiente comando para cargar información (Usuarios, días, criterios de valoración) en la base de datos: 
-```python3 manage.py loaddata data.json```
+Finalmente, ejecutar el siguiente comando para cargar información de configuración (Usuarios, días, criterios de valoración) en la base de datos: 
 
-* Configurar el fichero .env (Base de datos a utilizar, dominio, nombres en los botones) que se encuentra dentro del proyecto:
+```
+python3 manage.py loaddata data.json
+```
+> Qué datos carga en la base de datos????? Describir
+
+## Despliegue de la aplicación 📦
+```
+python3 manage.py runserver
+```
+
+## Ejecución de los tests 🔧
+```
+python3 manage.py test
+```
+
+## Configuraciones
+
+El fichero .env permite hacer un conjunto de configuraciones relacionadas con la base de datos a utilizar, el dominio, las leyendas en algunos botones, etc:
+
 ```
 #DB
 MYSQL_HOST='valor'
@@ -80,17 +117,10 @@ DISJOIN_BUTTON='Dar Baja'
 #
 ```
 
-## Despliegue de la aplicación 📦
-```
-python3 manage.py runserver
-```
-## Ejecución de los tests 🔧
-```
-python3 manage.py test
-```
 
-## Autores ✒️
+## Créditos ✒️
 
+* **Sergio** [github](https://github.com/jotarMicael).
 * **Micael Jotar** - *Trabajo Completo* - [jotarMicael](https://github.com/jotarMicael).
 * **Valentin Gallardo Ucero** - *Trabajo Completo*.
 
