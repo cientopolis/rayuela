@@ -1,6 +1,6 @@
 import factory
 
-from alaapp.models.project import Project
+from rayuelaApp.models.project import Project
 
 
 

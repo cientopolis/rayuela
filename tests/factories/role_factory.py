@@ -1,6 +1,6 @@
 import factory
 
-from alaapp.models.user import Role
+from rayuelaApp.models.user import Role
 
 class RoleAdminFactory(factory.django.DjangoModelFactory):
     class Meta:

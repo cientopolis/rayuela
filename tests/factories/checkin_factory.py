@@ -1,7 +1,7 @@
 import factory
 import datetime
 
-from alaapp.models.check_in import CheckIn
+from rayuelaApp.models.check_in import CheckIn
 
 from tests.factories.user_factory import UserPlayerFactory
 from tests.factories.project_factory import ProjectFactory

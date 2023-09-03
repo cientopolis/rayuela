@@ -1,0 +1,19 @@
+{% extends 'rayuelaApp/base/base.html' %}
+
+{% block title %}
+  Home
+{% endblock %}
+
+{% block content_header %}
+  {% if request.session.role == 'ROOT' %}
+    {% include 'rayuelaApp/root/root_header.html' %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if request.session.role == 'ADMIN' or request.session.role == 'PLAYER' %}
+    {% include 'rayuelaApp/projects/project.html' %}
+  {% endif %}
+{% endblock %}
+
+
