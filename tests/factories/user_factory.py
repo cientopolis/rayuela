@@ -1,6 +1,6 @@
 import factory
 
-from alaapp.models.user import User
+from rayuelaApp.models.user import User
 from werkzeug.security import generate_password_hash
 from tests.factories.role_factory import RoleAdminFactory, RolePlayerFactory
 

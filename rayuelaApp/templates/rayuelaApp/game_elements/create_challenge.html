@@ -1,0 +1,103 @@
+{% extends 'rayuelaApp/base/base.html' %}
+{% load static %}
+{% block title %}
+  Nuevo Desafío
+{% endblock %}
+
+{% block link %}   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+crossorigin=""/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/> {% endblock %}
+
+{% block content %}
+  <div class="col-md-6 mb-5 mt-0">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Crear Desafío</h3>
+      </div>
+      <!-- /.card-header -->
+      <!-- form start -->
+      <form action="/process_challenge/" id="send" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+          <div class="col-12 col-md-12">
+            <label class="invalid-feedback d-block">
+              {% for message in messages %}
+                {% if message.tags == 'error' %}
+                  *{{ message }}
+                {% endif %}
+              {% endfor %}
+            </label>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Nombre</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Ingresar nombre del desafío" required>
+            </div>
+            <div class="form-group">
+              <label>Asignar al proyecto</label>
+             
+              <select id="id_project" name="project" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" data-placeholder="Seleccionar projecto" style="width: 100%;" required>          
+                <option value='#'>--------</option>
+                {% for project in projects %}
+                <option  value='{{ project.id }}'>{{ project.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            
+           
+            <div class="form-group">
+              <label>Asignar restricción de tiempo</label>
+              <select id="id_time_restriction" name="time_restriction" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" data-placeholder="Seleccionar restricción de tiempo" style="width: 100%;" required>                       
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Área</label>
+              <select id="id_area" name="area" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" data-placeholder="Seleccionar áreas" style="width: 100%;" required>          
+                
+              </select>
+            
+              <br>
+              <div id="map" ></div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Meta de check-ins</label>
+              <input type="number" class="form-control" id="goal" name="goal" placeholder="Meta de check ins" required>
+            </div>
+            
+
+          </div>
+        </div>
+        <!-- /.card-body -->
+      </form>
+      <div class="card-footer">
+        <button onclick="$.confirmation(send);"  class="btn btn-primary">Crear Desafío</button>
+      </div>
+    </div>
+    {% for message in messages %}
+      {% if message.tags == 'success' %}
+        <div class="col-md-12 mb-1">
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="icon fas fa-check"></i>
+                {{ message }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+     crossorigin=""></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    
+     <script src="{% static 'dist/js/subareas_map.js' %}"></script>
+     <script src="{% static 'dist/js/get_tr_areas.js' %}"></script>
+<script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'dist/js/showconfirmation.js' %}"></script>
+{% endblock %}

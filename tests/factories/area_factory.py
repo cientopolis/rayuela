@@ -1,7 +1,7 @@
 import factory
 
-from alaapp.models.project_area import ProjectArea
-from alaapp.models.project_subarea import ProjectSubArea
+from rayuelaApp.models.project_area import ProjectArea
+from rayuelaApp.models.project_subarea import ProjectSubArea
 
 class ProjectAreaFactory(factory.django.DjangoModelFactory):
     class Meta:

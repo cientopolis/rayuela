@@ -1,0 +1,90 @@
+{% extends 'rayuelaApp/base/base.html' %}
+{% load static %}
+{% block title %}
+  Modificar Desafío
+{% endblock %}
+{% block link %}   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+crossorigin=""/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/> {% endblock %}
+{% block content %}
+<div class="col-md-6"> 
+    <div class="card card-primary">
+        <div class="card-header">
+        <h3 class="card-title">Modificar {{ challenge.name }}</h3>
+        </div>
+        
+        
+        <form action="/modify_challenge/" id="send" method="post" enctype="multipart/form-data"> {% csrf_token %}
+        <div class="card-body">
+        <div class="form-group ">
+       
+          <label class="invalid-feedback d-block">{% for message in messages %}{% if message.tags == 'error' %}*{{ message }}{% endif %}{% endfor %}</label>
+            <label for="exampleInputEmail1">Nombre del desafío</label>
+            <input type="text" class="form-control" name="name" placeholder="Ingrese un nombre" value='{{ challenge.name }}'>
+            <input type='hidden' class="form-control" name='id' value="{{ challenge.id }}"></input>
+            <input type='hidden' class="form-control" id='id_project' name='id_project' value="{{ challenge.project_id }}"></input>
+        </div>
+        
+        <div class="form-group">                
+          <label>Meta de check-ins</label>
+          <input type="text" class="form-control" name="goal" placeholder="Ingrese una meta" value='{{ challenge.goal }}'>              
+        </div>
+               
+          <div class="form-group">
+            <label>Asignar área</label>
+            <select id="id_area" name="area" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" data-placeholder="Seleccionar áreas" style="width: 100%;" required>          
+              
+            </select><br>
+            <div id="map" ></div>
+          </div>
+    
+            <div class="form-group">
+              <label>Asignar restricción de tiempo</label>
+              <select id="" name="time_restriction" class="form-control select2 select2-info" data-dropdown-css-class="select2-info"  data-placeholder="Seleccionar restricción de tiempo" style="width: 100%;" >          
+                {% for time_restriction in time_restrictions %}
+                <option value='{{ time_restriction.id }}'>{{ time_restriction.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          
+        
+       
+          </form>
+        </div>
+     
+        <div class="card-footer">
+        <button onclick="$.confirmation(send);"  class="btn btn-primary">Guardar cambios</button>
+        </div>
+        
+        </div>
+     
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <div class="col-md-12 mb-1">
+          <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+              <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <i class="icon fas fa-check"></i> 
+                {{ message }}
+                </div>
+          </div>
+        </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    
+  </div>
+{% endblock %}
+{% block scripts %}
+
+<script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+     crossorigin=""></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="{% static 'dist/js/subareas_map.js' %}"></script>
+<script src="{% static 'dist/js/get_tr_areas_.js' %}"></script>
+<script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
+    <script src="{% static '/dist/js/showconfirmation.js' %}"></script>
+{% endblock %}

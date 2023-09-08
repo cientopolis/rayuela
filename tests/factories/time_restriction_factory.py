@@ -1,7 +1,7 @@
 import factory
 from datetime import datetime
 import pytz
-from alaapp.models.time_restriction import TimeRestriction
+from rayuelaApp.models.time_restriction import TimeRestriction
 
 class TimeRestrictionFactory(factory.django.DjangoModelFactory):
     class Meta:

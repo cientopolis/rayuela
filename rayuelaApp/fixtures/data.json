@@ -1,0 +1,144 @@
+[
+    {
+        "model": "rayuelaApp.Role",
+        "pk": "1",
+        "fields": {
+            "name": "ROOT"
+        }
+    },
+    {
+        "model": "rayuelaApp.Role",
+        "pk": "2",
+        "fields": {
+            "name": "ADMIN"
+        }
+    },
+    {
+        "model": "rayuelaApp.Role",
+        "pk": "3",
+        "fields": {
+            "name": "PLAYER"
+        }
+    },
+    {
+        "model": "rayuelaApp.User",
+        "pk": "1",
+        "fields": {
+            "complete_name": "Admin",
+            "username": "admin",
+            "email": "admin@gmail.com",
+            "password": "sha256$zXtwikfOLY$4657986401c808296a4853bf10905693a47e7996c3b17338971387e85b07a251",
+            "role_id_id": 2,
+            "verified": 1
+        }
+    },
+    {
+        "model": "rayuelaApp.User",
+        "pk": "2",
+        "fields": {
+            "complete_name": "Root",
+            "username": "root",
+            "email": "root@gmail.com",
+            "password": "sha256$zXtwikfOLY$4657986401c808296a4853bf10905693a47e7996c3b17338971387e85b07a251",
+            "role_id_id": 1,
+            "verified": 1
+        }
+    },
+    {
+        "model": "rayuelaApp.User",
+        "pk": "3",
+        "fields": {
+            "complete_name": "Player",
+            "username": "player",
+            "email": "player@gmail.com",
+            "password": "sha256$zXtwikfOLY$4657986401c808296a4853bf10905693a47e7996c3b17338971387e85b07a251",
+            "role_id_id": 3,
+            "verified": 1
+        }
+    },
+    {
+        "model": "rayuelaApp.Criteria",
+        "pk": "1",
+        "fields": {
+            "id": 1,
+            "name": "Diversión"
+        }
+    },
+    {
+        "model": "rayuelaApp.Criteria",
+        "fields": {
+            "id": 2,
+            "name": "Dificultad"
+        }
+    },
+    {
+        "model": "rayuelaApp.Criteria",
+        "fields": {
+            "id": 3,
+            "name": "Originalidad"
+        }
+    },
+    {
+        "model": "rayuelaApp.Criteria",
+        "fields": {
+            "id": 4,
+            "name": "Duración"
+        }
+    }
+    ,
+    {
+        "model": "rayuelaApp.Day",
+        "fields": {
+            "id": 1,
+            "name": "Lunes"
+        }
+    }
+    ,
+    {
+        "model": "rayuelaApp.Day",
+        "fields": {
+            "id": 2,
+            "name": "Martes"
+        }
+    }
+    ,
+    {
+        "model": "rayuelaApp.Day",
+        "fields": {
+            "id": 3,
+            "name": "Miercoles"
+        }
+    }
+    ,
+    {
+        "model": "rayuelaApp.Day",
+        "fields": {
+            "id": 4,
+            "name": "Jueves"
+        }
+    }
+    ,
+    {
+        "model": "rayuelaApp.Day",
+        "fields": {
+            "id": 5,
+            "name": "Viernes"
+        }
+    }
+    ,
+    {
+        "model": "rayuelaApp.Day",
+        "fields": {
+            "id": 6,
+            "name": "Sabado"
+        }
+    }
+    ,
+    {
+        "model": "rayuelaApp.Day",
+        "fields": {
+            "id": 7,
+            "name": "Domingo"
+        }
+    }
+]

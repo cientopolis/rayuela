@@ -1,7 +1,7 @@
 import factory
 
 
-from alaapp.models.day import Day
+from rayuelaApp.models.day import Day
 
 class MondayDayFactory(factory.django.DjangoModelFactory):
     class Meta:

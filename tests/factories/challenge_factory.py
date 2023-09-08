@@ -1,7 +1,7 @@
 
 import factory
 
-from alaapp.models.challenge import Challenge
+from rayuelaApp.models.challenge import Challenge
 from tests.factories.project_factory import ProjectFactory
 
 class ChallengeFactory(factory.django.DjangoModelFactory):
