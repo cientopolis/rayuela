@@ -16,7 +16,7 @@ Including another URLconf
 
 from rayuelaApp.views import user, admin, project, game_elements, checkin ,badge , challenge , assignment, time_restriction
 from rayuelaApp.views.game_element_view import GameElementView
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('', user.index,name='index'),
@@ -62,7 +62,6 @@ urlpatterns = [
     path('modify_project_root/',project.modify_project_root,name='modify_project_root'),
     path('process_modify_project/',project.process_modify_project,name='process_modify_project'),
     path('disjoin_project/',project.disjoin_project,name='disjoin_project'),
-
-
+    path('api/', include('rayuelaApp.api.routers'), name='api'),
 ]
 

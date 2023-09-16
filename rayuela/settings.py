@@ -17,10 +17,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATICFILES_DIRS=(  os.path.join(BASE_DIR,'static'),)
   
-
-    
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -32,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,14 +37,17 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'django.contrib.contenttypes',
-    # local app   
+    # third apps
+    'rest_framework',
+    'corsheaders',
+    # local apps
     'rayuelaApp',
-    
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -58,9 +56,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "rayuela.urls"
-
-
-
 
 TEMPLATES = [
     {
@@ -81,7 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "rayuela.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -95,7 +89,6 @@ DATABASES = {
         'PORT':config('MYSQL_PORT')
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -138,6 +131,11 @@ MEDIA_ROOT = ''
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+]
 
 EMAIL_BACKEND=config('EMAIL_BACKEND')
 EMAIL_HOST=config('EMAIL_HOST')
