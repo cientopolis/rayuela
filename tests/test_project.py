@@ -29,8 +29,8 @@ class ProjectTestCase(TestCase):
         self.first_project.add_area(self.area)
         self.assertEqual(self.first_project.get_area(),self.area)
 
-    def test_project_change_avaliable(self):
-        self.assertFalse(self.first_project.get_avaliable())   
-        self.first_project.set_avaliable(True)
-        self.assertTrue(self.first_project.get_avaliable())    
+    def test_project_change_available(self):
+        self.assertFalse(self.first_project.get_available())
+        self.first_project.set_available(True)
+        self.assertTrue(self.first_project.get_available())
         
