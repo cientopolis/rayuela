@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=30)),
                 ('description', models.CharField(blank=True, max_length=500, null=True)),
                 ('image', models.ImageField(default='rayuelaApp/static/project_image/rio.jpg', upload_to='rayuelaApp/static/project_image/')),
-                ('avaliable', models.BooleanField(default=False)),
+                ('available', models.BooleanField(default=False)),
             ],
             options={
                 'verbose_name': 'Project',

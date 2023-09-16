@@ -11,5 +11,5 @@ class ProjectFactory(factory.django.DjangoModelFactory):
     
     name='project_test'
     description='description_test'
-    avaliable=False
+    available=False
 

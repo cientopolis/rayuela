@@ -10,7 +10,7 @@ class Project(models.Model):
     name=models.CharField(max_length=30,blank=False,null=False)
     description=models.CharField(max_length=500,blank=True,null=True)
     image=models.ImageField(upload_to='rayuelaApp/static/project_image/',default='rayuelaApp/static/project_image/rio.jpg',null=False,blank=False)
-    avaliable=models.BooleanField(default=False,blank=False,null=False)
+    available=models.BooleanField(default=False, blank=False, null=False)
     admins=models.ManyToManyField(User, related_name='admins')
     area=models.ForeignKey(ProjectArea,blank=True,null=True,on_delete=models.DO_NOTHING)
     time_restriction=models.ManyToManyField(TimeRestriction)
@@ -49,9 +49,9 @@ class Project(models.Model):
         self.name=name
         self.description=description
         if (checkbox == 'on'):
-            self.avaliable=1
+            self.available=1
         else:
-            self.avaliable=0
+            self.available=0
         
     def add_time_restrictions(self,id_time_restrictions):
         self.time_restriction.clear()   
@@ -100,12 +100,12 @@ class Project(models.Model):
     def is_my_time_restriction(self,time_restriction_id):
         return self.time_restriction.filter(id=time_restriction_id).exists()
         
-    def set_avaliable(self,avaliable_):
-        self.avaliable=avaliable_
+    def set_available(self,available_):
+        self.available=available_
         self.save()
 
-    def get_avaliable(self):
-        return self.avaliable
+    def get_available(self):
+        return self.available
     
     def get_time_restrictions(self):
         return self.time_restriction

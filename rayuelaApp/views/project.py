@@ -87,7 +87,7 @@ def game_elements_project(request):
 def see_all_projects(request):
      if System.is_logged(request):
           if System.is_player(request):         
-               return render (request,'rayuelaApp/projects/see_all_projects.html',{'nav':'block','see_all_projects':System.get_navbar_color, 'projects':Project.objects.filter(avaliable=True).exclude(user__id=request.session['id']) } )
+               return render (request,'rayuelaApp/projects/see_all_projects.html',{'nav':'block','see_all_projects':System.get_navbar_color, 'projects':Project.objects.filter(available=True).exclude(user__id=request.session['id']) } )
           elif System.is_root(request):
 
                return render (request,'rayuelaApp/projects/see_all_projects.html',{'nav':'block','see_all_projects':System.get_navbar_color, 'projects':Project.objects.all() } )
