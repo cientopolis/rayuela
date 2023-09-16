@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # third apps
     'rest_framework',
     'corsheaders',
+    'drf_yasg',
     # local apps
     'rayuelaApp',
 ]
@@ -131,6 +132,15 @@ MEDIA_ROOT = ''
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': {
+        None
+    },
+    'OPERATIONS_SORTER': {
+        'alpha'
+    },
+}
 
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
