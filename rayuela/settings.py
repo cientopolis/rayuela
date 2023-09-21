@@ -82,13 +82,17 @@ WSGI_APPLICATION = "rayuela.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": config('MYSQL_DB'),
-        'USER' : config('MYSQL_USER'),
-        'PASSWORD': config('MYSQL_PASSWORD'),
-        'HOST': config('MYSQL_HOST'),
-        'PORT':config('MYSQL_PORT')
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": 'rayuela.sqlite3'
     }
+    #"mysql": {
+    #    "ENGINE": "django.db.backends.mysql",
+    #    "NAME": config('MYSQL_DB'),
+    #    'USER' : config('MYSQL_USER'),
+    #    'PASSWORD': config('MYSQL_PASSWORD'),
+    #    'HOST': config('MYSQL_HOST'),
+    #    'PORT':config('MYSQL_PORT')
+    #}
 }
 
 # Password validation
