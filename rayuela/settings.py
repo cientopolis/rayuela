@@ -81,13 +81,9 @@ WSGI_APPLICATION = "rayuela.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": config('MYSQL_DB'),
-        'USER' : config('MYSQL_USER'),
-        'PASSWORD': config('MYSQL_PASSWORD'),
-        'HOST': config('MYSQL_HOST'),
-        'PORT':config('MYSQL_PORT')
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'rayuela.sqlite3',
     }
 }
 
