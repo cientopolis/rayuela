@@ -82,7 +82,7 @@ Para ingresar al sistema se generan los siguientes usuarios:
 - pv3
 - pv4
 
-En todos los casos la contraseña es `ContraseñaInsegura`.
+En todos los casos la contraseña es `1234`.
 
 NOTA: **NO** debe usarse esta información para producción, solo para trabajar en desarrollo
 
