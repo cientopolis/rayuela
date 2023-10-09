@@ -1,0 +1,6 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "Ciudad": "La Plata", "AreaAInterceptar": "Bosque de la Plata"}, "geometry": { "type": "Polygon", "coordinates": [ [ [ -57.9414000, -34.9119000 ], [ -57.9276000, -34.9119000 ], [ -57.9276000, -34.9062000 ], [ -57.9414000, -34.9062000 ], [ -57.9414000, -34.9119000 ] ] ] } }
+]
+}
