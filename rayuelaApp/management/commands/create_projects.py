@@ -7,19 +7,26 @@ from rayuelaApp.models.project import Project
 from rayuelaApp.models.project_area import ProjectArea
 from rayuelaApp.models.time_restriction import TimeRestriction
 
+text_0 = ''
+text_27 = 'Lorem ipsum dolor sit amet.'
+text_91 = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non ex mattis, tempus quam a.'
+text_179 = ('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit eu risus vel maximus.'
+            'Suspendisse quis gravida magna. Nullam condimentum, dui in tincidunt tincidunt, erat.')
+text_343 = ('Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+            'Phasellus quis aliquam urna. Cras et nunc tortor.'
+            'Aenean elementum massa ac ex condimentum malesuada.'
+            'Vestibulum quis felis id nulla tincidunt viverra convallis bibendum tortor.'
+            'Ut finibus euismod eros sed imperdiet.'
+            'Nullam lobortis augue eu mauris dapibus congue. Nam nec accumsan leo.')
+
 PROJECTS = {
-    "proy1": ["Proyecto incial", True, "Lorem ipsum dolor sit amet."],
-    "proy2": ["Proyecto Dos", True,
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis aliquam urna. Cras et nunc tortor. Aenean elementum massa ac ex condimentum malesuada. Vestibulum quis felis id nulla tincidunt viverra convallis bibendum tortor. Ut finibus euismod eros sed imperdiet. Nullam lobortis augue eu mauris dapibus congue. Nam nec accumsan leo."],
-    "proy3": ["Otro proyecto 3", False, ""],
-    "proy4": ["Proyecto 4", True,
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non ex mattis, tempus quam a."],
-    "proy5": ["Nuevo proyecto 5", True,
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras hendrerit eu risus vel maximus. Suspendisse quis gravida magna. Nullam condimentum, dui in tincidunt tincidunt, erat."],
-    "proy6": ["Proyecto número 6", True,
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non ex mattis, tempus quam a."],
-    "proy7": ["Último proyecto", False,
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis aliquam urna. Cras et nunc tortor. Aenean elementum massa ac ex condimentum malesuada. Vestibulum quis felis id nulla tincidunt viverra convallis bibendum tortor. Ut finibus euismod eros sed imperdiet. Nullam lobortis augue eu mauris dapibus congue. Nam nec accumsan leo."],
+    "proy1": ["Proyecto incial", True, text_27],
+    "proy2": ["Proyecto Dos", True, text_343],
+    "proy3": ["Otro proyecto 3", False, text_0],
+    "proy4": ["Proyecto 4", True, text_91],
+    "proy5": ["Nuevo proyecto 5", True, text_179],
+    "proy6": ["Proyecto número 6", True, text_91],
+    "proy7": ["Último proyecto", False, text_343],
 }
 
 # Ubicación de archivos para generar información
@@ -32,7 +39,8 @@ admin3 = User.objects.get(id=4)
 
 # Se crean restricciones de tiempo
 # Lunes a viernes
-lunes_a_viernes = TimeRestriction.objects.create(name="Lunes a Viernes", date_from="2023-10-01", date_to="2024-10-01", hour_from="00:00", hour_to="23:59")
+lunes_a_viernes = TimeRestriction.objects.create(name="Lunes a viernes", date_from="2023-10-01", date_to="2024-10-01",
+                                                 hour_from="00:00", hour_to="23:59")
 lunes_a_viernes.days.add(1)
 lunes_a_viernes.days.add(2)
 lunes_a_viernes.days.add(3)
@@ -40,7 +48,8 @@ lunes_a_viernes.days.add(4)
 lunes_a_viernes.days.add(5)
 
 # Fin de semana
-fin_de_semana = TimeRestriction.objects.create(name="Fin de semana", date_from="2023-10-01", date_to="2024-10-01", hour_from="00:00", hour_to="23:59",)
+fin_de_semana = TimeRestriction.objects.create(name="Fin de semana", date_from="2023-10-01", date_to="2024-10-01",
+                                               hour_from="00:00", hour_to="23:59",)
 fin_de_semana.days.add(6)
 fin_de_semana.days.add(7)
 
