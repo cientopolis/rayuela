@@ -19,14 +19,16 @@ text_343 = ('Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
             'Ut finibus euismod eros sed imperdiet.'
             'Nullam lobortis augue eu mauris dapibus congue. Nam nec accumsan leo.')
 
+website = "https://www.unq.edu.ar/"
+
 PROJECTS = {
-    "proy1": ["Proyecto incial", True, text_27],
-    "proy2": ["Proyecto Dos", True, text_343],
-    "proy3": ["Otro proyecto 3", False, text_0],
-    "proy4": ["Proyecto 4", True, text_91],
-    "proy5": ["Nuevo proyecto 5", True, text_179],
-    "proy6": ["Proyecto número 6", True, text_91],
-    "proy7": ["Último proyecto", False, text_343],
+    "proy1": ["Proyecto incial", True, text_27, website],
+    "proy2": ["Proyecto Dos", True, text_343, ""],
+    "proy3": ["Otro proyecto 3", False, text_0, website],
+    "proy4": ["Proyecto 4", True, text_91, ""],
+    "proy5": ["Nuevo proyecto 5", True, text_179, website],
+    "proy6": ["Proyecto número 6", True, text_91, ""],
+    "proy7": ["Último proyecto", False, text_343, website],
 }
 
 # Ubicación de archivos para generar información
@@ -60,8 +62,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Se crean proyectos
         for project in PROJECTS:
-            new_project = Project.objects.create(name=PROJECTS[project][0], available=PROJECTS[project][1],
-                                                 description=PROJECTS[project][2])
+            new_project = Project.objects.create(name=PROJECTS[project][0], web=PROJECTS[project][3],
+                                                 available=PROJECTS[project][1], description=PROJECTS[project][2])
             new_project.save()
 
             print("Creando proyecto {}".format(PROJECTS[project][0]))
