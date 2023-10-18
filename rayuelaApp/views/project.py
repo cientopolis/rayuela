@@ -53,7 +53,7 @@ def edit_project(request):
                      messages.error(request,'Debe ingresar todos los campos')
                      return modify_project(request)              
                 project=Project.objects.get(id__exact=request.POST['id'])              
-                project.modify(request.POST['name'],request.POST['description'],request.POST.get('checkbox')) 
+                project.modify(request.POST['name'],request.POST['description'],request.POST['web'],request.POST.get('checkbox'))
                 if request.FILES.get('area'):                               
                     df = gpd.read_file(request.FILES.get('area'), driver='GeoJSON')   
                     area=json.loads(df.to_json())
