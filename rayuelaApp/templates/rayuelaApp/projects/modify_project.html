@@ -28,21 +28,17 @@ crossorigin=""/>
             <label for="exampleInputEmail1">Nombre del proyecto</label>
             <input type="text" class="form-control" name="name" placeholder="Ingrese un nombre" value='{{ project.name }}'>
             <input type='hidden' class="form-control" name='id' value="{{ project.id }}"></input>
-            
-       
         </div>
         
         <div class="form-group">
-           
-
-                
                 <label>Descripcion del proyecto</label>
                 <textarea  name="description" class="form-control" rows="3" placeholder="Ingresar" value='{{ project.description }}'>{{ project.description }}</textarea>
-          
-               
         </div>
-        
-       
+        <div class="form-group">
+            <label>Sitio web del proyecto</label>
+            <input type="text" class="form-control" name="web" placeholder="URL sitio web" value='{% if project.web == None %}{% else %}{{project.web}}{% endif %}'>
+        </div>
+
           <div class="form-group">
             <label for="exampleFormControlFile1">Imagen del proyecto</label>
             <input type="file" class="form-control-file" accept="image/*" name="image">
