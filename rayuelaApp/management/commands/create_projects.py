@@ -33,14 +33,16 @@ desc_mihabitat=('Saneamiento y gestión de residuos; enfermedades transmitidas p
 
 desc_cyano=('Eutrofización de cuerpos de agua y cianobacterias','Se aborda la eutrofización de cuerpos de agua superficiales de manera interrelacionada con su cuenca de aporte, los diferentes usos del agua y el Cianosemáforo, para la prevención del riesgo en aguas de uso recreativo')
 
+website = "https://www.unq.edu.ar/"
+
 PROJECTS = {
-    "proy1": ["Anticipando la crecida", True, desc_Anticipando],
-    "proy2": ["GeoVin", True, desc_geovin],
-    "proy3": ["Caza Mosquitos", False, desc_cazamosquitos],
-    "proy4": ["PreserVamos", True, desc_preservamos],
-    "proy5": ["ArgentiNat.org", True, desc_argentinat],
-    "proy6": ["Mi habitat", True, desc_mihabitat],
-    "proy7": ["Cyano", False, desc_cyano],
+    "proy1": ["Anticipando la crecida", True, desc_Anticipando, website],
+    "proy2": ["GeoVin", True, desc_geovin, website],
+    "proy3": ["Caza Mosquitos", False, desc_cazamosquitos, website],
+    "proy4": ["PreserVamos", True, desc_preservamos, website],
+    "proy5": ["ArgentiNat.org", True, desc_argentinat, website],
+    "proy6": ["Mi habitat", True, desc_mihabitat, website],
+    "proy7": ["Cyano", False, desc_cyano, website],
 }
 
 # Ubicación de archivos para generar información
@@ -74,8 +76,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Se crean proyectos
         for project in PROJECTS:
-            new_project = Project.objects.create(name=PROJECTS[project][0], available=PROJECTS[project][1],
-                                                 description=PROJECTS[project][2])
+            new_project = Project.objects.create(name=PROJECTS[project][0], web=PROJECTS[project][3],
+                                                 available=PROJECTS[project][1], description=PROJECTS[project][2])
             new_project.save()
 
             print("Creando proyecto {}".format(PROJECTS[project][0]))

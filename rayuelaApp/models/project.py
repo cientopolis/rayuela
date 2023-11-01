@@ -10,6 +10,7 @@ class Project(models.Model):
     name=models.CharField(max_length=30,blank=False,null=False)
     description=models.CharField(max_length=500,blank=True,null=True)
     image=models.ImageField(upload_to='rayuelaApp/static/project_image/',default='rayuelaApp/static/project_image/rio.jpg',null=False,blank=False)
+    web=models.CharField(max_length=100,blank=True,null=True)
     available=models.BooleanField(default=False, blank=False, null=False)
     admins=models.ManyToManyField(User, related_name='admins')
     area=models.ForeignKey(ProjectArea,blank=True,null=True,on_delete=models.DO_NOTHING)
@@ -17,7 +18,7 @@ class Project(models.Model):
     
 
     def __str__(self):
-        return f'{self.name},{self.description},{self.image},{self.admins},{self.area},{self.time_restriction}'
+        return f'{self.name},{self.description},{self.web},{self.image},{self.admins},{self.area},{self.time_restriction}'
 
     class Meta:
         verbose_name='Project'
@@ -45,9 +46,10 @@ class Project(models.Model):
         self.area=area
         self.save()
 
-    def modify(self,name,description,checkbox):
+    def modify(self,name,description,web,checkbox):
         self.name=name
         self.description=description
+        self.web=web
         if (checkbox == 'on'):
             self.available=1
         else:
