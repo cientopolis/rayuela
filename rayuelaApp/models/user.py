@@ -1,7 +1,10 @@
 from django.db import models
-from rayuelaApp.models.role  import Role
+
+from rayuelaApp.models.role import Role
 from werkzeug.security import generate_password_hash
 
+
+# Perfiles root y admin
 class User(models.Model):
     complete_name=models.CharField(max_length=30,blank=False,null=False)
     username=models.CharField(max_length=30,blank=False,null=False)
@@ -11,7 +14,7 @@ class User(models.Model):
     role_id=models.ForeignKey(Role,null=False,blank=False,on_delete=models.DO_NOTHING)
     verified=models.BooleanField(default=False,blank=False,null=False)
     projects=models.ManyToManyField('rayuelaApp.project')
-    
+
 
     def __str__(self):
         return f'{self.complete_name},{self.username},{self.email},{self.password},{self.profile_image},{self.verified},{self.role_id}'
@@ -20,7 +23,6 @@ class User(models.Model):
         verbose_name='User'
         verbose_name_plural="Users"
         db_table='user'
-
    
     def add_gamelement_active(self,challenge):
         self.gameelement_actives.add(challenge)

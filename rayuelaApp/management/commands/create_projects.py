@@ -3,6 +3,7 @@ import geopandas as gpd
 import json
 
 from rayuelaApp.models.user import User
+from users.models import Volunteer
 from rayuelaApp.models.project import Project
 from rayuelaApp.models.project_area import ProjectArea
 from rayuelaApp.models.time_restriction import TimeRestriction
@@ -53,6 +54,11 @@ admin1 = User.objects.get(id=2)
 admin2 = User.objects.get(id=3)
 admin3 = User.objects.get(id=4)
 
+# Se obtienen voluntarios/as existentes
+pv1 = Volunteer.objects.get(id=1)
+pv2 = Volunteer.objects.get(id=2)
+pv3 = Volunteer.objects.get(id=3)
+
 # Se crean restricciones de tiempo
 # Lunes a viernes
 lunes_a_viernes = TimeRestriction.objects.create(name="Lunes a viernes", date_from="2023-10-01", date_to="2024-10-01",
@@ -85,24 +91,31 @@ class Command(BaseCommand):
         # Se agregan admins a los proyectos
         Project.objects.get(id=1).add_admin(admin1)
         Project.objects.get(id=1).add_admin(admin2)
+        print("Agregando admins a proyecto {}".format(Project.objects.get(id=1).name))
 
         Project.objects.get(id=2).add_admin(admin2)
         Project.objects.get(id=2).add_admin(admin3)
+        print("Agregando admins a proyecto {}".format(Project.objects.get(id=2).name))
 
         Project.objects.get(id=3).add_admin(admin3)
+        print("Agregando admin a proyecto {}".format(Project.objects.get(id=3).name))
 
         Project.objects.get(id=4).add_admin(admin1)
         Project.objects.get(id=4).add_admin(admin2)
         Project.objects.get(id=4).add_admin(admin3)
+        print("Agregando admins a proyecto {}".format(Project.objects.get(id=4).name))
 
         Project.objects.get(id=5).add_admin(admin1)
+        print("Agregando admin a proyecto {}".format(Project.objects.get(id=5).name))
 
         Project.objects.get(id=6).add_admin(admin2)
         Project.objects.get(id=6).add_admin(admin3)
+        print("Agregando admins a proyecto {}".format(Project.objects.get(id=6).name))
 
         Project.objects.get(id=7).add_admin(admin1)
         Project.objects.get(id=7).add_admin(admin2)
         Project.objects.get(id=7).add_admin(admin3)
+        print("Agregando admins a proyecto {}".format(Project.objects.get(id=6).name))
 
         # Se agregan restricciones de tiempo a los proyectos
         Project.objects.get(id=1).add_time_restriction(lunes_a_viernes)
@@ -116,6 +129,7 @@ class Command(BaseCommand):
         Project.objects.get(id=6).add_time_restriction(lunes_a_viernes)
         Project.objects.get(id=6).add_time_restriction(fin_de_semana)
         Project.objects.get(id=7).add_time_restriction(fin_de_semana)
+        print("Agregando restricciones de tiempo a proyecto")
 
         # Se agregan áreas a los proyectos
         geojson_la_plata = gpd.read_file(path_files+'la_plata.geojson', driver='GeoJSON')
@@ -137,3 +151,14 @@ class Command(BaseCommand):
         Project.objects.get(id=5).add_area(lago)
         Project.objects.get(id=6).add_area(la_plata)
         Project.objects.get(id=7).add_area(lago)
+        print("Agregando áreas y subáreas a los proyectos")
+
+        # Se agregan projectos a personas voluntarias
+        pv1.add_project(Project.objects.get(id=1))
+        pv1.add_project(Project.objects.get(id=2))
+        pv1.add_project(Project.objects.get(id=6))
+        pv2.add_project(Project.objects.get(id=4))
+        pv2.add_project(Project.objects.get(id=5))
+        pv3.add_project(Project.objects.get(id=2))
+        pv3.add_project(Project.objects.get(id=5))
+        print("Agregando proyectos a personas voluntarias")
