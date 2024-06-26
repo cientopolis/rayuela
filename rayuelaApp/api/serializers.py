@@ -1,12 +1,6 @@
 from rest_framework import serializers
-from users.models import RayuelaUser, Volunteer
+from users.models import Volunteer
 from rayuelaApp.models.project import Project
-
-
-class RayuelaUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RayuelaUser
-        fields = '__all__'
 
 
 class ProjectSerializer(serializers.ModelSerializer):

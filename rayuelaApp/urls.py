@@ -15,7 +15,6 @@ Including another URLconf
 """
 
 from rayuelaApp.views import user, admin, project, game_elements, checkin ,badge , challenge , assignment, time_restriction
-from rayuelaApp.api.viewset import RegisterViewSet, LogoutViewSet
 from rayuelaApp.views.game_element_view import GameElementView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from django.urls import path, include
@@ -68,7 +67,5 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/register/', RegisterViewSet.as_view, name='api_register'),
-    path('api/logout/',LogoutViewSet.as_view, name='api_logout'),
 ]
 
