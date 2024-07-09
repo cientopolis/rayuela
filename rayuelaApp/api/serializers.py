@@ -28,8 +28,12 @@ class VolunteerSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-    def add_project(self, user, project):
-        user.add_project(project)
-        self.save()
-
-
+    def update(self, instance, validated_data):
+        project_id = self.initial_data.get('project_id')
+        if self.initial_data.get('join'):
+            instance.projects.add(project_id)
+        else:
+            instance.projects.remove(project_id)
+        validated_data.get('projects', instance.projects)
+        instance.save()
+        return instance
