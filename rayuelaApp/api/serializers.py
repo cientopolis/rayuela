@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
+from rayuelaApp.models.check_in import CheckIn
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -37,3 +38,10 @@ class VolunteerSerializer(serializers.ModelSerializer):
         validated_data.get('projects', instance.projects)
         instance.save()
         return instance
+
+
+class CheckinSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CheckIn
+        fields = '__all__'

@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
-from rayuelaApp.api.serializers import VolunteerSerializer
-from rayuelaApp.api.serializers import ProjectSerializer
+from rayuelaApp.models.check_in import CheckIn
+from rayuelaApp.api.serializers import VolunteerSerializer, ProjectSerializer, CheckinSerializer
 
 
 class LoginViewSet(viewsets.ModelViewSet):
@@ -53,3 +53,12 @@ class ProjectsWithoutTheUserViewSet(viewsets.ModelViewSet):
         user_projects = user.projects
         projects = Project.objects.filter(available=True)
         return set(projects) ^ set(user_projects.all())
+
+
+class CheckinViewset(viewsets.ModelViewSet):
+    serializer_class = CheckinSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return CheckIn.objects.filter(user=user.id)
