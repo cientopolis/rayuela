@@ -30,7 +30,7 @@ schema_view = get_schema_view(
       default_version='v1',
       description="Documentación de la API de Rayuela",
    ),
-   public=False,
+   public=True,
    permission_classes=(permissions.AllowAny,),
 )
 
