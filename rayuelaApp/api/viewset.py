@@ -21,7 +21,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
     permission_classes = ()  # Al estar vacío no se necesita permiso para acceder a esta vista
 
 
-class JoinTheProjectViewSet(viewsets.ModelViewSet):
+class JoinDisjoinTheProjectViewSet(viewsets.ModelViewSet):
     serializer_class = VolunteerSerializer
     permission_classes = [IsAuthenticated]
 
@@ -29,13 +29,6 @@ class JoinTheProjectViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Volunteer.objects.filter(username=user)
 
-class DisjoinTheProjectViewSet(viewsets.ModelViewSet):
-    serializer_class = VolunteerSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.request.user
-        return Volunteer.objects.filter(username=user)
 
 class ProjectsViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
@@ -59,6 +52,8 @@ class CheckinViewset(viewsets.ModelViewSet):
     serializer_class = CheckinSerializer
     permission_classes = [IsAuthenticated]
 
+    # Devuelve checkins de project y user actuales
     def get_queryset(self):
         user = self.request.user
-        return CheckIn.objects.filter(user=user.id)
+        project = self.request.data['project_id']
+        return CheckIn.objects.filter(user=user.id, project=project)
