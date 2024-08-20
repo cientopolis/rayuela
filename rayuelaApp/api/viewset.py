@@ -22,6 +22,13 @@ class RegisterViewSet(viewsets.ModelViewSet):
 
 
 class JoinDisjoinTheProjectViewSet(viewsets.ModelViewSet):
+    """Envío de JSON en PATCH \n
+    'true' si se está uniendo y 'false' si lo está abandonando
+    {
+        "project_id": number_id,
+        "join": true
+    }
+    """
     serializer_class = VolunteerSerializer
     permission_classes = [IsAuthenticated]
 
@@ -49,6 +56,12 @@ class ProjectsWithoutTheUserViewSet(viewsets.ModelViewSet):
 
 
 class CheckinViewset(viewsets.ModelViewSet):
+    """
+    Envío de JSON en GET \n
+    {
+        "project_id": number_id
+    }
+    """
     serializer_class = CheckinSerializer
     permission_classes = [IsAuthenticated]
 
