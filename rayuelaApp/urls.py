@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from rayuelaApp.views import user, admin, project, game_elements, checkin ,badge , challenge , assignment, time_restriction
+from rayuelaApp.views import (user, admin, project, game_elements, checkin ,badge , challenge , assignment,
+                              time_restriction, task)
 from rayuelaApp.views.game_element_view import GameElementView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from django.urls import path, include
@@ -58,8 +59,10 @@ urlpatterns = [
     path('my_projects/',user.my_projects,name='my_projects'),
     path('add_like_dislike/',assignment.add_like_dislike,name='add_like_dislike'),
     path('create_scorings/',assignment.create_scorings,name='create_scorings'),
-    path('create_time_restriction/',time_restriction.time_restriction,name='create_time_restriction'),
+    path('create_time_restriction/<int:project_id>/',time_restriction.time_restriction,name='create_time_restriction'),
     path('process_time_restriction/',time_restriction.process_time_restriction,name='process_time_restriction'),
+    path('create_task/<int:project_id>/', task.task, name='create_task'),
+    path('process_task/', task.process_task, name='process_task'),
     path('modify_project_root/',project.modify_project_root,name='modify_project_root'),
     path('process_modify_project/',project.process_modify_project,name='process_modify_project'),
     path('disjoin_project/',project.disjoin_project,name='disjoin_project'),

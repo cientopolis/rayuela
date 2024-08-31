@@ -10,7 +10,8 @@ from rayuelaApp.models.token import Token
 from rayuelaApp.models.check_in import CheckIn
 from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.models.time_restriction import TimeRestriction
-# Register your models here.
+from rayuelaApp.models.task import Task
+
 
 class UserAdmin(admin.ModelAdmin):
     list_display=('id','complete_name','username','email','password','profile_image','verified','role_id')
@@ -52,6 +53,9 @@ class DayAdmin(admin.ModelAdmin):
 class TimeRestrictionAdmin(admin.ModelAdmin):
     list_display= ('id','name','date_from','date_to','hour_from','hour_to')
 
+class TaskAdmin(admin.ModelAdmin):
+    list_display= ('id','name','description')
+
 admin.site.register(Role,RoleAdmin)
 admin.site.register(User,UserAdmin)
 admin.site.register(Token,TokenAdmin)
@@ -62,3 +66,4 @@ admin.site.register(ProjectSubArea,SubAreaAdmin)
 admin.site.register(Scoring,ScoringAdmin)
 admin.site.register(Criteria,CriteriaAdmin)
 admin.site.register(Day,DayAdmin)
+admin.site.register(Task,TaskAdmin)

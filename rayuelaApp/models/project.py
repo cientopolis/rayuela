@@ -1,10 +1,9 @@
-
 from django.db import models
 from django.contrib import messages
 from rayuelaApp.models.project_area  import ProjectArea
 from rayuelaApp.models.time_restriction  import TimeRestriction
 from rayuelaApp.models.user import User
-
+from rayuelaApp.models.task import Task
 
 class Project(models.Model):
     name=models.CharField(max_length=30,blank=False,null=False)
@@ -15,7 +14,7 @@ class Project(models.Model):
     admins=models.ManyToManyField(User, related_name='admins')
     area=models.ForeignKey(ProjectArea,blank=True,null=True,on_delete=models.DO_NOTHING)
     time_restriction=models.ManyToManyField(TimeRestriction)
-    
+    tasks = models.ManyToManyField(Task, related_name="tareas")
 
     def __str__(self):
         return f'{self.name},{self.description},{self.web},{self.image},{self.admins},{self.area},{self.time_restriction}'
@@ -44,6 +43,16 @@ class Project(models.Model):
 
     def add_area(self,area):
         self.area=area
+        self.save()
+
+    def add_tasks(self,id_tasks):
+        self.tasks.clear()
+        for id_task in id_tasks:
+            self.add_task(id_task)
+        self.save()
+
+    def add_task(self, id_task):
+        self.tasks.add(Task.objects.get(id=id_task))
         self.save()
 
     def modify(self,name,description,web,checkbox):
@@ -101,7 +110,7 @@ class Project(models.Model):
     
     def is_my_time_restriction(self,time_restriction_id):
         return self.time_restriction.filter(id=time_restriction_id).exists()
-        
+
     def set_available(self,available_):
         self.available=available_
         self.save()

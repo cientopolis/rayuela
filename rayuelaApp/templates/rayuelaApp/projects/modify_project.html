@@ -16,7 +16,7 @@ crossorigin=""/>
     <div class="card card-primary">
          
         <div class="card-header">
-        <h3 class="card-title">Modificar {{ project.name }}</h3>
+        <h3 class="card-title">Modificar proyecto "{{ project.name }}"</h3>
         </div>
         
         <input type='hidden' class="form-control" id='id_project' name='id_project' value="{{ project.id }}">
@@ -61,17 +61,27 @@ crossorigin=""/>
             <div id="map" ></div>
           </div>
           {% endif %}
+
             <div class="form-group">
-              <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
-              <label>Restricciones de tiempo actuales</label>&nbsp;&nbsp;&nbsp;<a href="#" onclick="send_project_time_restriction_id();"  class="btn-sm btn-warning">Crear RT</a>
-              <select  id="" name="time_restriction[]" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" multiple="multiple" data-placeholder="Seleccionar restricciones de tiempo" style="width: 100%;" >          
-                {% for time_restriction in time_restrictions %}
-                <option selected value='{{ time_restriction.id }}' {% is_my_time_restriction project time_restriction.id as bool  %} {% if bool  %} selected {% endif %}>{{ time_restriction.name }}</option>
+              <label>Tareas actuales</label>  <a href="/create_task/{{project.id}}/" class="btn-sm btn-warning">Crear nueva</a>
+               <select  id="task" name="tasks[]" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" multiple="multiple" data-placeholder="Seleccionar tareas" style="width: 100%;" >
+                {% for task in tasks %}
+                <option selected value='{{ task.id }}'>{{ task.name }}</option>
                 {% endfor %}
               </select>
             </div>
-          
-        
+
+            <div class="form-group">
+              <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
+              <label>Restricciones de tiempo actuales</label>  <a href="/create_time_restriction/{{project.id}}/" class="btn-sm btn-warning">Crear nueva</a>
+              <select  id="time_restriction" name="time_restriction[]" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" multiple="multiple" data-placeholder="Seleccionar restricciones de tiempo" style="width: 100%;" >
+                {% for time_restriction in time_restrictions %}
+                <option selected value='{{ time_restriction.id }}'>{{ time_restriction.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
        
         <div class="form-check">
           {% if project.available == 1   %}
@@ -86,11 +96,11 @@ crossorigin=""/>
         </div>
         <input type='hidden' class="form-control" id='bool' name='bool' value=""></input>
       </form>
-        
-        
+
+
         </div>
-      
-      
+
+
         <div class="card-footer">        
         <button onclick="$.confirmation(send);"  class="btn btn-primary">Guardar cambios</button>
        
@@ -113,12 +123,4 @@ crossorigin=""/>
 <script src="{% static 'dist/js/get_tr_areas_.js' %}"></script>
 <script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
     <script src="{% static '/dist/js/showconfirmation.js' %}"></script>
-    <script src="{% static '/dist/js/send_project_id.js' %}"></script>
-
-    <script>function send_project_time_restriction_id() {  
-
-      $("#bool").val('true');
-      $.confirmation('#send');      
-    }</script>
-    
 {% endblock %}
