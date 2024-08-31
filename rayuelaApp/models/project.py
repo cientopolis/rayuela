@@ -3,7 +3,7 @@ from django.contrib import messages
 from rayuelaApp.models.project_area  import ProjectArea
 from rayuelaApp.models.time_restriction  import TimeRestriction
 from rayuelaApp.models.user import User
-from rayuelaApp.models.task import Task
+from rayuelaApp.models.task_type import TaskType
 
 class Project(models.Model):
     name=models.CharField(max_length=30,blank=False,null=False)
@@ -14,7 +14,7 @@ class Project(models.Model):
     admins=models.ManyToManyField(User, related_name='admins')
     area=models.ForeignKey(ProjectArea,blank=True,null=True,on_delete=models.DO_NOTHING)
     time_restriction=models.ManyToManyField(TimeRestriction)
-    tasks = models.ManyToManyField(Task, related_name="tareas")
+    task_types = models.ManyToManyField(TaskType, related_name="tipos_de_tarea")
 
     def __str__(self):
         return f'{self.name},{self.description},{self.web},{self.image},{self.admins},{self.area},{self.time_restriction}'
@@ -45,14 +45,14 @@ class Project(models.Model):
         self.area=area
         self.save()
 
-    def add_tasks(self,id_tasks):
-        self.tasks.clear()
-        for id_task in id_tasks:
-            self.add_task(id_task)
+    def add_task_types(self,id_task_types):
+        self.task_types.clear()
+        for id_task_type in id_task_types:
+            self.add_task_type(id_task_type)
         self.save()
 
-    def add_task(self, id_task):
-        self.tasks.add(Task.objects.get(id=id_task))
+    def add_task_type(self, id_task_type):
+        self.task_types.add(TaskType.objects.get(id=id_task_type))
         self.save()
 
     def modify(self,name,description,web,checkbox):

@@ -63,10 +63,10 @@ crossorigin=""/>
           {% endif %}
 
             <div class="form-group">
-              <label>Tareas actuales</label>  <a href="/create_task/{{project.id}}/" class="btn-sm btn-warning">Crear nueva</a>
-               <select  id="task" name="tasks[]" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" multiple="multiple" data-placeholder="Seleccionar tareas" style="width: 100%;" >
-                {% for task in tasks %}
-                <option selected value='{{ task.id }}'>{{ task.name }}</option>
+              <label>Tipos de tarea actuales</label>  <a href="/create_task_type/{{project.id}}/" class="btn-sm btn-warning">Crear nueva</a>
+               <select  id="task_type" name="task_types[]" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" multiple="multiple" data-placeholder="Seleccionar tipos de tarea" style="width: 100%;" >
+                {% for task_type in task_types %}
+                <option selected value='{{ task_type.id }}'>{{ task_type.name }}</option>
                 {% endfor %}
               </select>
             </div>
