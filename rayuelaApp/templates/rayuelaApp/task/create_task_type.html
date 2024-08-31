@@ -1,18 +1,18 @@
 {% extends 'rayuelaApp/base/base.html' %}
 {% load static %}
 {% block title %}
-  Nuevo Checkin
+  Nueva tarea
 {% endblock %}
 
 {% block content %}
   <div class="col-md-6 mb-5 mt-0">
     <div class="card card-primary">
       <div class="card-header">
-        <h3 class="card-title">Crear restricción de tiempo para: {{ project.name }}</h3>
+        <h3 class="card-title">Crear tipo de tarea para "{{ project.name }}"</h3>
       </div>
       <!-- /.card-header -->
       <!-- form start -->
-      <form action="/process_time_restriction/" id="send" method="post" enctype="multipart/form-data">
+      <form action="/process_task_type/" id="send" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="card-body">
           <div class="col-12 col-md-12">
@@ -25,43 +25,18 @@
             </label>
             <div class="form-group">
                 <label for="exampleInputEmail1">Nombre</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="Ingresar nombre de la rt" required>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Ingresar tipo de tarea" required>
                 <!-- Input oculto pero necesario ara volver al contexto correcto de proyecto -->
                 <input type='hidden' class="form-control" id='project_id' name='project_id' value="{{ project.id }}"></input>
-              </div>
-              <input  type="checkbox" class="form-group-input" name="hour">&nbsp;<label for="exampleFormControlFile1">Hora</label>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Rango de fechas</label>
-             
-              <div class="input-group">
-                <div class="input-group-prepend">
-
-                  <span class="input-group-text">
-                    <i class="far fa-calendar-alt"></i>
-                  </span>
-                </div>
-                <input type="text" id="datetime" name="datetime"  class="form-control float-right">
-              </div>
-            </div> 
-
-            
-            <label for="exampleInputEmail1">Días:</label>
-            <div class="form-group">
-               {% for day in days%}
-      
-                <input  type="checkbox" class="form-group-input" name="{{ day.id }}">
-               
-             
-                <label for="exampleFormControlFile1">{{ day.name }}</label>
-
-                {% endfor %}
-              </div>
-          </div>        
+                <label for="exampleInputEmail1">Descripción</label>
+                <input type="text" class="form-control" id="description" name="description" placeholder="Ingresar descripción">
+            </div>
+          </div>
         </div>
         <!-- /.card-body -->
       </form>
       <div class="card-footer">
-        <button onclick="$.confirmation(send);" class="btn btn-primary">Crear RT</button>
+        <button onclick="$.confirmation(send);" class="btn btn-primary">Crear tarea</button>
       </div>
    
     </div>

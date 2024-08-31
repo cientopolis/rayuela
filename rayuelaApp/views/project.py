@@ -38,12 +38,12 @@ def modify_project(request):
     if System.is_logged(request):
           if System.is_admin(request):
                if request.method == 'POST':
-                    return render (request,'rayuelaApp/projects/modify_project.html',{'nav':'block','modify_project':System.get_navbar_color, 'project':Project.objects.get(id__exact=request.POST.get('id')),'areas':ProjectArea.objects.all(),'time_restrictions':Project.objects.get(id__exact=request.POST.get('id')).time_restriction.all()})
+                    return render (request,'rayuelaApp/projects/modify_project.html',{'nav':'block','modify_project':System.get_navbar_color, 'project':Project.objects.get(id__exact=request.POST.get('id')),'areas':ProjectArea.objects.all(),'time_restrictions':Project.objects.get(id__exact=request.POST.get('id')).time_restriction.all(), 'task_types':Project.objects.get(id__exact=request.POST.get('id')).task_types.all()})
                else:
-                    messages.success(request,'¡RT Creado con éxito!')
-                    return render (request,'rayuelaApp/projects/modify_project.html',{'nav':'block','modify_project':System.get_navbar_color, 'project':Project.objects.get(id__exact=request.session['project_id']),'areas':ProjectArea.objects.all(),'time_restrictions':Project.objects.get(id__exact=request.session['project_id']).time_restriction.all()})
+                    messages.success(request,'¡Creado con éxito!')
+                    return render (request,'rayuelaApp/projects/modify_project.html',{'nav':'block','modify_project':System.get_navbar_color, 'project':Project.objects.get(id__exact=request.session['project_id']),'areas':ProjectArea.objects.all(),'time_restrictions':Project.objects.get(id__exact=request.session['project_id']).time_restriction.all(),  'task_types':Project.objects.get(id__exact=request.session['project_id']).task_types.all()})
           return redirect('home')
-    return redirect('index') 
+    return redirect('index')
 
 
 def edit_project(request):
@@ -62,14 +62,12 @@ def edit_project(request):
                     p_area.add_subareas(area['features'])
                     project.add_area(p_area)              
                 project.add_time_restrictions(request.POST.getlist('time_restriction[]'))
-                project.save()           
+                project.add_task_types(request.POST.getlist('task_types[]'))
+                project.save()
                 form = ProjectForm(data=request.POST, files=request.FILES, instance=project)
                 form.procces(project.get_image_path())
-                if request.POST['bool'] == 'true':
-                    request.session['project_id']=request.POST['id']
-                    return redirect ('create_time_restriction')
                 messages.success(request,'Proyecto %s modificado con éxito ' % (project.get_name()))
-          return redirect('home') 
+          return redirect('home')
      return redirect('index')
 
 def game_elements_project(request):

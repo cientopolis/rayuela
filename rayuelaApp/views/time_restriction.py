@@ -8,15 +8,13 @@ from django.contrib import messages
 
 
 
-def time_restriction(request):
+def time_restriction(request, project_id):
     if System.is_logged(request):
         if System.is_admin(request):
-
-             
              if request.method == 'POST':
-                return render(request, 'rayuelaApp/time_restriction/create_time_restriction.html',{'nav':'block','create_time_restriction':System.get_navbar_color, 'days':Day.objects.all(), 'project': Project.objects.get(id=request.POST['project_id'])})
+                return render(request, 'rayuelaApp/time_restriction/create_time_restriction.html',{'nav':'block','create_time_restriction':System.get_navbar_color, 'days':Day.objects.all(), 'project': Project.objects.get(id=project_id)})
              else:
-                return render(request, 'rayuelaApp/time_restriction/create_time_restriction.html',{'nav':'block','create_time_restriction':System.get_navbar_color, 'days':Day.objects.all(), 'project': Project.objects.get(id=request.session['project_id'])})
+                return render(request, 'rayuelaApp/time_restriction/create_time_restriction.html',{'nav':'block','create_time_restriction':System.get_navbar_color, 'days':Day.objects.all(), 'project': Project.objects.get(id=project_id)})
         return redirect ('home')
     return redirect ('index')
 
@@ -31,8 +29,8 @@ def process_time_restriction(request):
                 messages.error(request,'Debe seleccionar al menos un día')
                 return redirect ('create_time_restriction')           
             datetimes=request.POST['datetime'].split(' ')           
-            tr=TimeRestriction(name=request.POST['name'],date_from=datetimes[0], date_to=datetimes[3])       
-            tr.add_hours(request.POST.get('hour'),datetimes[1],datetimes[4])        
+            tr=TimeRestriction(name=request.POST['name'],date_from=datetimes[0], date_to=datetimes[3])
+            tr.add_hours(request.POST.get('hour'),datetimes[1],datetimes[4])
             tr.add_days(request.POST)
             Project.objects.get(id=request.POST['project_id']).add_time_restriction(tr.get_id())
             return redirect ('modify_project')
