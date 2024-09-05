@@ -1,11 +1,11 @@
 from django.db import models
 
 from rayuelaApp.models.project import Project
-from rayuelaApp.models.user import User
+from users.models import Volunteer
 
 
 class CheckIn(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(Volunteer, on_delete=models.DO_NOTHING)
     project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
     latitude = models.CharField(blank=False, null=False, max_length=500)
     longitude = models.CharField(blank=False, null=False, max_length=500)
