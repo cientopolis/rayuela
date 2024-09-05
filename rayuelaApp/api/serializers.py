@@ -1,3 +1,5 @@
+from distutils.util import strtobool
+
 from rest_framework import serializers
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
@@ -30,8 +32,9 @@ class VolunteerSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        project_id = self.initial_data.get('project_id')
-        if self.initial_data.get('join'):
+        project_id = self.context.get('project_id', 0)
+        join = strtobool(self.context.get('join', False))
+        if join:
             instance.projects.add(project_id)
         else:
             instance.projects.remove(project_id)
