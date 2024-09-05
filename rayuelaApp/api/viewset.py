@@ -22,12 +22,9 @@ class RegisterViewSet(viewsets.ModelViewSet):
 
 
 class JoinDisjoinTheProjectViewSet(viewsets.ModelViewSet):
-    """Envío de JSON en PATCH \n
-    'true' si se está uniendo y 'false' si lo está abandonando
-    {
-        "project_id": number_id,
-        "join": true
-    }
+    """Envío de parametros en PATCH \n
+    ?project_id=number_id&join=bool
+    'True' si se está uniendo y 'False' si lo está abandonando
     """
     serializer_class = VolunteerSerializer
     permission_classes = [IsAuthenticated]
@@ -35,6 +32,12 @@ class JoinDisjoinTheProjectViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return Volunteer.objects.filter(username=user)
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"project_id": self.request.query_params.get('project_id', 0),
+                        "join": self.request.query_params.get('join', False)})
+        return context
 
 
 class ProjectsViewSet(viewsets.ModelViewSet):
@@ -57,10 +60,8 @@ class ProjectsWithoutTheUserViewSet(viewsets.ModelViewSet):
 
 class CheckinViewset(viewsets.ModelViewSet):
     """
-    Envío de JSON en GET \n
-    {
-        "project_id": number_id
-    }
+    Envío de parametro en GET \n
+    ?project_id=number_id
     """
     serializer_class = CheckinSerializer
     permission_classes = [IsAuthenticated]
@@ -68,5 +69,5 @@ class CheckinViewset(viewsets.ModelViewSet):
     # Devuelve checkins de project y user actuales
     def get_queryset(self):
         user = self.request.user
-        project = self.request.data['project_id']
+        project = self.request.query_params.get('project_id', 0)
         return CheckIn.objects.filter(user=user.id, project=project)
