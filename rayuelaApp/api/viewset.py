@@ -37,6 +37,12 @@ class VolunteerViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'])
     def join_or_disjoin_the_project(self, request, pk=None):
+        """
+        Necesita envío de parametros \n
+        - project_id: number
+        - join: bool
+        - Parametros y valores en URL: ?project_id=number_id&join=bool
+        """
         instance = self.get_object()
         project_id = self.request.query_params.get('project_id', 0)
         join = strtobool(self.request.query_params.get('join', False))
@@ -67,8 +73,9 @@ class ProjectsWithoutTheUserViewSet(viewsets.ModelViewSet):
 
 class CheckinViewset(viewsets.ModelViewSet):
     """
-    Envío de parametro en GET \n
-    ?project_id=number_id
+    Necesita envío de parametro en GET{id} \n
+    - project_id: number
+    - Parametro y valor en URL: ?project_id=number_id
     """
     serializer_class = CheckinSerializer
     permission_classes = [IsAuthenticated]
