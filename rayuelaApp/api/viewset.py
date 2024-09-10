@@ -1,5 +1,11 @@
+from crypt import methods
+from distutils.util import strtobool
+
+#from drf_yasg.openapi import Response
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
@@ -21,11 +27,7 @@ class RegisterViewSet(viewsets.ModelViewSet):
     permission_classes = ()  # Al estar vacío no se necesita permiso para acceder a esta vista
 
 
-class JoinDisjoinTheProjectViewSet(viewsets.ModelViewSet):
-    """Envío de parametros en PATCH \n
-    ?project_id=number_id&join=bool
-    'True' si se está uniendo y 'False' si lo está abandonando
-    """
+class VolunteerViewSet(viewsets.ModelViewSet):
     serializer_class = VolunteerSerializer
     permission_classes = [IsAuthenticated]
 
@@ -33,11 +35,17 @@ class JoinDisjoinTheProjectViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Volunteer.objects.filter(username=user)
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({"project_id": self.request.query_params.get('project_id', 0),
-                        "join": self.request.query_params.get('join', False)})
-        return context
+    @action(detail=True, methods=['patch'])
+    def join_or_disjoin_the_project(self, request, pk=None):
+        instance = self.get_object()
+        project_id = self.request.query_params.get('project_id', 0)
+        join = strtobool(self.request.query_params.get('join', False))
+        if join:
+            instance.projects.add(project_id)
+        else:
+            instance.projects.remove(project_id)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class ProjectsViewSet(viewsets.ModelViewSet):
@@ -53,9 +61,8 @@ class ProjectsWithoutTheUserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        user_projects = user.projects
         projects = Project.objects.filter(available=True)
-        return set(projects) ^ set(user_projects.all())
+        return set(projects) ^ set(user.projects.all())
 
 
 class CheckinViewset(viewsets.ModelViewSet):
