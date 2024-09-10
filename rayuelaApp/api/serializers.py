@@ -1,5 +1,3 @@
-from distutils.util import strtobool
-
 from rest_framework import serializers
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
@@ -23,24 +21,13 @@ class VolunteerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Volunteer
-        fields = '__all__'
+        fields = ['id', 'projects', 'username', 'email', 'profile_image', 'complete_name']
 
     def create(self, validated_data):
         user = Volunteer.objects.create(email=validated_data['email'], username=validated_data['username'])
         user.set_password(validated_data['password'])
         user.save()
         return user
-
-    def update(self, instance, validated_data):
-        project_id = self.context.get('project_id', 0)
-        join = strtobool(self.context.get('join', False))
-        if join:
-            instance.projects.add(project_id)
-        else:
-            instance.projects.remove(project_id)
-        validated_data.get('projects', instance.projects)
-        instance.save()
-        return instance
 
 
 class CheckinSerializer(serializers.ModelSerializer):
