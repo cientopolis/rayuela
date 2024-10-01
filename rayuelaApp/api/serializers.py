@@ -21,7 +21,7 @@ class VolunteerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Volunteer
-        fields = ['id', 'projects', 'username', 'email', 'profile_image', 'complete_name']
+        fields = ['id', 'projects', 'username', 'email', 'profile_image', 'first_name', 'last_name']
 
     def create(self, validated_data):
         user = Volunteer.objects.create(email=validated_data['email'], username=validated_data['username'])
