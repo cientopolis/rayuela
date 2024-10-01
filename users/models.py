@@ -9,7 +9,6 @@ class RayuelaUser(AbstractUser):
     Si hay un atributo en común para todos los usuarios se declara acá
     """
     profile_image = models.ImageField(upload_to='rayuelaApp/static/profile_image/', default='rayuelaApp/static/profile_image/user.png', null=False, blank=False)
-    complete_name = models.CharField(max_length=30, blank=True, null=True)
     projects = models.ManyToManyField(Project, blank=True)
 
     REQUIRED_FIELDS = ['email', 'password']

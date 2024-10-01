@@ -16,7 +16,7 @@ insecure_password_pv = '1234'
 
 USERS_PV = {
     "pv1": ["Persona Voluntaria 1", "persona-voluntaria-1@correofalso.com", insecure_password_pv],
-    "pv2": ["P. Voluntaria 2", "p-voluntaria-2", insecure_password_pv],
+    "pv2": ["P. Voluntaria 2", "p-voluntaria-2@correofalso.com", insecure_password_pv],
     "pv3": ["Persona V. 3", "persona-v-3@correofalso.com", insecure_password_pv],
     "pv4": ["P.V. 4", "pv4@correofalso.com", insecure_password_pv],
 }
@@ -53,6 +53,6 @@ class Command(BaseCommand):
         # Se crean usuarios/as de personas voluntarias
         for user_pv in USERS_PV:
             new_pv = Volunteer.objects.create_user(username=user_pv, password=USERS_PV[user_pv][2],
-                                           complete_name=USERS_PV[user_pv][0], email=USERS_PV[user_pv][1])
+                                           first_name=USERS_PV[user_pv][0], email=USERS_PV[user_pv][1])
             new_pv.save()
             print("Creando user PV {}".format(user_pv))
