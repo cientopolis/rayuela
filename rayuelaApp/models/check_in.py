@@ -1,6 +1,7 @@
 from django.db import models
 
 from rayuelaApp.models.project import Project
+from rayuelaApp.models.task_type import TaskType
 from users.models import Volunteer
 
 
@@ -9,7 +10,7 @@ class CheckIn(models.Model):
     project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
     latitude = models.CharField(blank=False, null=False, max_length=500)
     longitude = models.CharField(blank=False, null=False, max_length=500)
-    task_type = models.CharField(blank=False, null=False, max_length=500, default="default")
+    task_type = models.ForeignKey(TaskType, on_delete=models.DO_NOTHING, default="default")
     datetime = models.DateTimeField(null=False, blank=False)
 
     class Meta:
