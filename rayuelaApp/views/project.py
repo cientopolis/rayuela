@@ -34,24 +34,33 @@ def register_project(request):
           return redirect('home')
      return redirect('index')  
 
-def modify_project(request):
+def modify_project(request, id):
     if System.is_logged(request):
           if System.is_admin(request):
-               if request.method == 'POST':
-                    return render (request,'rayuelaApp/projects/modify_project.html',{'nav':'block','modify_project':System.get_navbar_color, 'project':Project.objects.get(id__exact=request.POST.get('id')),'areas':ProjectArea.objects.all(),'time_restrictions':Project.objects.get(id__exact=request.POST.get('id')).time_restriction.all(), 'task_types':Project.objects.get(id__exact=request.POST.get('id')).task_types.all()})
-               else:
-                    messages.success(request,'¡Creado con éxito!')
-                    return render (request,'rayuelaApp/projects/modify_project.html',{'nav':'block','modify_project':System.get_navbar_color, 'project':Project.objects.get(id__exact=request.session['project_id']),'areas':ProjectArea.objects.all(),'time_restrictions':Project.objects.get(id__exact=request.session['project_id']).time_restriction.all(),  'task_types':Project.objects.get(id__exact=request.session['project_id']).task_types.all()})
+                    return render (request,'rayuelaApp/projects/modify_project.html',{'nav':'block','modify_project':System.get_navbar_color, 'project':Project.objects.get(id__exact=id)})
           return redirect('home')
     return redirect('index')
 
+def project_options(request, id):
+    if System.is_logged(request):
+          if System.is_admin(request):
+                return render (request,'rayuelaApp/projects/project.html',{'nav':'block','project_options':System.get_navbar_color, 'project':Project.objects.get(id__exact=id)})
+          return redirect('home')
+    return redirect('index')
+
+def collection_tasks(request, id):
+    if System.is_logged(request):
+          if System.is_admin(request):
+                return render (request,'rayuelaApp/collection_tasks/collection_tasks.html',{'nav':'block','collection_tasks':System.get_navbar_color, 'project':Project.objects.get(id__exact=id)})
+          return redirect('home')
+    return redirect('index')
 
 def edit_project(request):
      if System.is_logged(request):
           if System.is_admin(request):                              
                 if not request.POST.get('name') or not request.POST.get('description')  :
                      messages.error(request,'Debe ingresar todos los campos')
-                     return modify_project(request)              
+                     return modify_project(request, request.POST['id'])
                 project=Project.objects.get(id__exact=request.POST['id'])              
                 project.modify(request.POST['name'],request.POST['description'],request.POST['web'],request.POST.get('checkbox'))
                 if request.FILES.get('area'):                               
@@ -67,6 +76,7 @@ def edit_project(request):
                 form = ProjectForm(data=request.POST, files=request.FILES, instance=project)
                 form.procces(project.get_image_path())
                 messages.success(request,'Proyecto %s modificado con éxito ' % (project.get_name()))
+                return project_options(request, request.POST['id'])
           return redirect('home')
      return redirect('index')
 

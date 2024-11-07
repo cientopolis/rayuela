@@ -15,7 +15,7 @@ Including another URLconf
 """
 
 from rayuelaApp.views import (user, admin, project, game_elements, checkin ,badge , challenge , assignment,
-                              time_restriction, task_type)
+                              time_restriction, task_type, collection_tasks, game_rules)
 from rayuelaApp.views.game_element_view import GameElementView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from django.urls import path, include
@@ -31,14 +31,20 @@ urlpatterns = [
     path('activate_account/',user.activate_account,name='activate_account'),
     path('active_account/',user.active_account,name='active_account'),
     path('create_admin/',admin.create_admin,name='create_admin'),
-    path('modify_project/',project.modify_project,name='modify_project'),
+    path('project_options/<int:id>/',project.project_options,name='project_options'),
+    path('modify_project/<int:id>/',project.modify_project,name='modify_project'),
+    path('game_rules/<int:id>/', game_rules.view_game_rules, name='game_rules'),
+    path('create_badge/<int:id>/', game_rules.create_badge, name='create_badge'),
+    path('process_badge/', game_rules.process_badge, name='process_badge'),
     path('modify/',game_elements.modify,name='modify'),
     path('register_admin/',admin.register_admin,name='register_admin'),
     path('create_project/',project.create_project,name='create_project'),
     path('register_project/',project.register_project,name='register_project'),
     path('edit_project/',project.edit_project,name='register_project'),
-    path('create_badge/',badge.badge,name='create_badge'),
-    path('process_badge/',badge.process_badge,name='process_badge'),
+    path('collection_tasks/<int:id>/', project.collection_tasks, name='collection_tasks'),
+    path('automatic_task_generation/<int:id>/', collection_tasks.automatic_task_generation, name='automatic_task_generation'),
+    #path('create_badge/',badge.badge,name='create_badge'),
+    #path('process_badge/',badge.process_badge,name='process_badge'),
     path('change_state/',game_elements.change_state,name='change_state'),
     path('create_challenge/',challenge.challenge,name='create_challenge'),
     path('process_challenge/',challenge.process_challenge,name='process_challenge'),

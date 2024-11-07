@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 from rayuelaApp.models.time_restriction import TimeRestriction
 from rayuelaApp.models.day import Day
 from rayuelaApp.models.project import Project
@@ -33,6 +33,6 @@ def process_time_restriction(request):
             tr.add_hours(request.POST.get('hour'),datetimes[1],datetimes[4])
             tr.add_days(request.POST)
             Project.objects.get(id=request.POST['project_id']).add_time_restriction(tr.get_id())
-            return redirect ('modify_project')
+            return redirect(reverse('modify_project', kwargs={'id': request.POST['project_id']}))
         return redirect ('home')
     return redirect ('index')

@@ -12,7 +12,7 @@
 
 {% block content %}
   {% if request.session.role == 'ADMIN' or request.session.role == 'PLAYER' %}
-    {% include 'rayuelaApp/projects/project.html' %}
+    {% include 'rayuelaApp/projects/projects.html' %}
   {% endif %}
 {% endblock %}
 

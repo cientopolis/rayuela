@@ -6,7 +6,6 @@ from rayuelaApp.models.project_area import ProjectArea
 from rayuelaApp.models.time_restriction import TimeRestriction
 
 class CollectionTask(models.Model):
-
     task_type = models.ForeignKey(TaskType, related_name="tipo_de_tarea", on_delete=models.DO_NOTHING)
     sub_area = models.ForeignKey(ProjectSubArea, on_delete=models.DO_NOTHING)
     time_restriction = models.ForeignKey(TimeRestriction, on_delete=models.DO_NOTHING)

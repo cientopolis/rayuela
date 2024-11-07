@@ -4,18 +4,16 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        <li class="nav-item d-sm-inline-block">
-          <a href="/home/" class="nav-link">Home</a>
-        </li>
+
       </li>
-    </ul> 
+        <li class="nav-item d-sm-inline-block">
+          <a href="/project_options/{{project.id}}/" class="nav-link">{{ project.name }}</a>
+        </li>
+    </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-     
 
-      
-      
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
@@ -39,7 +37,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link elevation-4">
+    <a href="/home/" class="brand-link elevation-4">
       <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">{{ settings.PROJECT_TITLE }}</span>
     </a>
@@ -56,39 +54,14 @@
         </div>
       </div>
 
-      
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fas fa-dice nav-icon"></i>
-              <p>
-                Game Elements
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview" style="display: {{ nav|default_if_none:'none' }}">
-              <li class="nav-item">
-                <a href="/create_challenge/" class="nav-link {{ create_challenge|default_if_none:'' }}">
-                  <i class="fas fa-trophy nav-icon"></i>
-                  <p>{{ settings.ADMIN_CREATE_CHALLENGE }}</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/create_badge/" class="nav-link {{ create_badge|default_if_none:'' }}">
-                  <i class="fas fa-certificate nav-icon"></i>
-                  <p>{{ settings.ADMIN_CREATE_BADGE }}</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex" >
+        <a href="/home/" class="d-block"><i class="fa fa-list" aria-hidden="true" style="margin-left: 15px"> Mis proyectos </i></a>
+      </div>
 
-          
-                 
+
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

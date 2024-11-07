@@ -14,9 +14,8 @@ crossorigin=""/>
 {% block content %}
 <div class="col-md-6"> 
     <div class="card card-primary">
-         
         <div class="card-header">
-        <h3 class="card-title">Modificar proyecto "{{ project.name }}"</h3>
+        <h3 class="card-title">{{ project.name }} - Modificar proyecto </h3>
         </div>
         
         <input type='hidden' class="form-control" id='id_project' name='id_project' value="{{ project.id }}">
@@ -65,7 +64,7 @@ crossorigin=""/>
             <div class="form-group">
               <label>Tipos de tarea actuales</label>  <a href="/create_task_type/{{project.id}}/" class="btn-sm btn-warning">Crear nueva</a>
                <select  id="task_type" name="task_types[]" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" multiple="multiple" data-placeholder="Seleccionar tipos de tarea" style="width: 100%;" >
-                {% for task_type in task_types %}
+                {% for task_type in project.task_types.all %}
                 <option selected value='{{ task_type.id }}'>{{ task_type.name }}</option>
                 {% endfor %}
               </select>
@@ -75,14 +74,12 @@ crossorigin=""/>
               <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
               <label>Restricciones de tiempo actuales</label>  <a href="/create_time_restriction/{{project.id}}/" class="btn-sm btn-warning">Crear nueva</a>
               <select  id="time_restriction" name="time_restriction[]" class="form-control select2 select2-info" data-dropdown-css-class="select2-info" multiple="multiple" data-placeholder="Seleccionar restricciones de tiempo" style="width: 100%;" >
-                {% for time_restriction in time_restrictions %}
+                {% for time_restriction in project.time_restriction.all %}
                 <option selected value='{{ time_restriction.id }}'>{{ time_restriction.name }}</option>
                 {% endfor %}
               </select>
             </div>
 
-
-       
         <div class="form-check">
           {% if project.available == 1   %}
 
@@ -95,23 +92,15 @@ crossorigin=""/>
           <label for="exampleFormControlFile1">¿Público?</label>
         </div>
         <input type='hidden' class="form-control" id='bool' name='bool' value=""></input>
-      </form>
-
+        </div>
+        </form>
 
         </div>
 
-
-        <div class="card-footer">        
+        <div class="card-footer">
         <button onclick="$.confirmation(send);"  class="btn btn-primary">Guardar cambios</button>
-       
         </div>
-
-        
-        
         </div>
-     
-        
-    
   </div>
 {% endblock %}
 {% block scripts %}

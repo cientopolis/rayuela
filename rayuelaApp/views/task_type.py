@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 from rayuelaApp.models.project import Project
 from rayuelaApp.models.task_type import TaskType
 from rayuelaApp.utils.System import System
@@ -23,6 +23,6 @@ def process_task_type(request):
                 return redirect ('create_task_type')
             task_type = TaskType.objects.create(name=request.POST['name'], description=request.POST['description'])
             Project.objects.get(id=request.POST['project_id']).add_task_type(task_type.get_id())
-            return redirect ('modify_project')
+            return redirect(reverse('modify_project', kwargs={'id': request.POST['project_id']}))
         return redirect ('home')
     return redirect ('index')

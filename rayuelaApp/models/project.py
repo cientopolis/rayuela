@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib import messages
+
+from rayuelaApp.models.collection_task import CollectionTask
 from rayuelaApp.models.project_area  import ProjectArea
+from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.models.time_restriction  import TimeRestriction
 from rayuelaApp.models.user import User
 from rayuelaApp.models.task_type import TaskType
@@ -15,6 +18,7 @@ class Project(models.Model):
     area=models.ForeignKey(ProjectArea,blank=True,null=True,on_delete=models.DO_NOTHING)
     time_restriction=models.ManyToManyField(TimeRestriction)
     task_types = models.ManyToManyField(TaskType, related_name="tipos_de_tarea")
+    collection_tasks = models.ManyToManyField(CollectionTask, related_name="tareas_de_recoleccion")
 
     def __str__(self):
         return f'{self.name},{self.description},{self.web},{self.image},{self.admins},{self.area},{self.time_restriction}'
@@ -24,17 +28,31 @@ class Project(models.Model):
         verbose_name_plural="Projects"
         db_table='project'
 
-    def add_checkin(self,checkin_,request): 
-        from rayuelaApp.models.game_element import GameElement
-        s_gr=''
-        for ge in self.get_game_elements():     
-            g=GameElement.objects.get_subclass(id=ge.get_id())             
-            if g.is_valid_checkin(checkin_,request.session['id']):     
-                g.add_checkin(checkin_)
-                g.increment_progress(request.session['id'])          
-                s_gr= s_gr + g.get_name() + '<br/>'
-        messages.success(request,'Progreso actualizado en los Elementos de juego: %s'  % (s_gr))                
+    def automatic_task_generation(self):
+        sub_areas = ProjectSubArea.objects.filter(area_id=self.area.id)
+        collection_tasks = []
+        for sub_area in sub_areas:
+            for task_type in self.task_types.all():
+                for time_restriction in self.time_restriction.all():
+                    collection_task = CollectionTask(sub_area=sub_area, task_type=task_type, time_restriction=time_restriction)
+                    collection_task.save()
+                    collection_tasks.append(collection_task)
+        self.collection_tasks.set(collection_tasks)
         self.save()
+
+
+
+    # def add_checkin(self,checkin_,request):
+    #     from rayuelaApp.models.game_element import GameElement
+    #     s_gr=''
+    #     for ge in self.get_game_elements():
+    #         g=GameElement.objects.get_subclass(id=ge.get_id())
+    #         if g.is_valid_checkin(checkin_,request.session['id']):
+    #             g.add_checkin(checkin_)
+    #             g.increment_progress(request.session['id'])
+    #             s_gr= s_gr + g.get_name() + '<br/>'
+    #     messages.success(request,'Progreso actualizado en los Elementos de juego: %s'  % (s_gr))
+    #     self.save()
 
     def add_admins(self,id_admins):
         for id_admin in id_admins:
@@ -75,8 +93,8 @@ class Project(models.Model):
         self.time_restriction.add(TimeRestriction.objects.get(id=id_time_restriction))
         self.save()
 
-    def get_game_elements(self):
-        return self.gameelement.all()
+    # def get_game_elements(self):
+    #     return self.gameelement.all()
 
     def set_name(self,name_):
         self.name=name_

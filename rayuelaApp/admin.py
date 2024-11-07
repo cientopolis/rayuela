@@ -27,7 +27,7 @@ class TokenAdmin(admin.ModelAdmin):
     list_display=('user_id','token')
 
 class BadgeAdmin(admin.ModelAdmin):
-    list_display=('image','parent')
+    list_display=('name', 'description', 'image')
 
 class AreaAdmin(admin.ModelAdmin):
     list_display=('lat','long')
