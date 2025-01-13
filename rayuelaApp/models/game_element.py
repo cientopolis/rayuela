@@ -12,7 +12,7 @@ class GameElement(models.Model):
     owner=models.ForeignKey(User,null=True,blank=True,on_delete=models.DO_NOTHING)
     goal=models.IntegerField(blank=True,null=True)
     rate=models.FloatField(blank=True,null=True)
-    project=models.ForeignKey(Project,blank=False,null=False,on_delete=models.DO_NOTHING,related_name='%(class)s')
+    project=models.ForeignKey(Project,blank=False,null=False,on_delete=models.DO_NOTHING,default=0,related_name='%(class)s')
     area=models.ForeignKey(ProjectSubArea,null=True,blank=True,on_delete=models.DO_NOTHING)
     time_restriction=models.ForeignKey(TimeRestriction,null=True,blank=True,on_delete=models.DO_NOTHING)
     checkin=models.ManyToManyField('rayuelaApp.checkin', related_name='%(class)s_checkins')

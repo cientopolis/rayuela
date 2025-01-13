@@ -21,7 +21,7 @@ class Project(models.Model):
     collection_tasks = models.ManyToManyField(CollectionTask, related_name="tareas_de_recoleccion")
 
     def __str__(self):
-        return f'{self.name},{self.description},{self.web},{self.image},{self.admins},{self.area},{self.time_restriction}'
+        return f'{self.name}'
 
     class Meta:
         verbose_name='Project'
