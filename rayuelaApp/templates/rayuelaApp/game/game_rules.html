@@ -6,15 +6,14 @@
 
 {% block content %}
 
-<div id="content">
+<div id="content" style="margin: 10px; padding-left: 10px; padding-right: 10px; width: 100%;">
+
 <div class="card-deck" style="margin: 10px;">
     <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
-
     <div class="card card-primary">
       <div class="card-header">
         <h3 class="card-title">{{ project.name }} - Insignias</h3>
       </div>
-
       <div class="card-body">
         <div>
           <form action='/create_badge/{{project.id}}/' method='GET' style="display: flex; margin-bottom: 5px;">
@@ -23,7 +22,10 @@
             <br />
           </form>
         </div>
-        <div class="table-responsive">
+        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-badges" aria-expanded="false" aria-controls="collapse-badges">
+          Tabla de Insignias
+        </button>
+        <div class="table-responsive collapse" id="collapse-badges" >
         <table id="table-badge" class="table table-bordered">
           <thead class="table-primary">
             <tr>
@@ -67,12 +69,10 @@
 
 <div class="card-deck" style="margin: 10px;">
     <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
-
     <div class="card card-primary">
       <div class="card-header">
-        <h3 class="card-title">{{ project.name }} - Puntajes </h3>
+        <h3 class="card-title">{{ project.name }} - Reglas </h3>
       </div>
-
       <div class="card-body">
         <div>
           <form action='/create_score/{{project.id}}/' method='GET' style="display: flex; margin-bottom: 5px;">
@@ -81,8 +81,10 @@
             <br />
           </form>
         </div>
-
-        <div class="table-responsive">
+        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-rules" aria-expanded="false" aria-controls="collapse-rules">
+          Tabla de reglas
+        </button>
+        <div class="table-responsive collapse" id="collapse-rules">
         <table id="table-score" class="table table-bordered">
           <thead class="table-primary">
             <tr>
