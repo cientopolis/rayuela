@@ -5,3 +5,4 @@ venv/
 *.sqlite3
 __pycache__/
 migrations/
+rayuelaApp/static/badge_image/*
