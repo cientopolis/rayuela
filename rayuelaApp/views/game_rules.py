@@ -7,6 +7,7 @@ from rayuelaApp.models.score_allocation_strategy import ScoreByCheckin, ScoreByT
     ScoreByArea
 from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.models.badge_requirement import BadgeRequirement
+from rayuelaApp.models.leaderboard import Leaderboard
 from rayuelaApp.forms import BadgeForm
 from rayuelaApp.models.task_type import TaskType
 from rayuelaApp.utils.System import System
@@ -24,6 +25,30 @@ def view_game_rules(request, id):
            return render(request, 'rayuelaApp/game/game_rules.html', {'nav': 'block', 'project': Project.objects.get(id=id), 'badges': Badge.objects.filter(project=id), 'scores': Score.objects.filter(project=id)})
         return redirect('home')
     return redirect('index')
+
+'''
+==========================
+      Clasificacion
+==========================
+'''
+
+def process_leaderboard(request):
+    if System.is_logged(request):
+        if System.is_admin(request):
+            request.session['project_id']=request.POST['project_id']
+            order_by_points = True
+            if request.POST['select_leaderboard'] == 'badges':
+                order_by_points = False
+            if len(Leaderboard.objects.filter(project=request.POST['project_id'])) > 0:
+               leaderboard = Leaderboard.objects.get(project=request.POST['project_id'])
+               leaderboard.order_by_points = order_by_points
+            else:
+               leaderboard = Leaderboard(project=Project.objects.get(id=request.POST['project_id']), order_by_points=order_by_points)
+            leaderboard.save()
+            messages.success(request, 'Se ha actualizado correctamente')
+            return redirect(reverse('game_rules', kwargs={'id': request.POST['project_id']}))
+        return redirect ('home')
+    return redirect ('index')
 
 '''
 ==========================

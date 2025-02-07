@@ -34,6 +34,7 @@ urlpatterns = [
     path('project_options/<int:id>/',project.project_options,name='project_options'),
     path('modify_project/<int:id>/',project.modify_project,name='modify_project'),
     path('game_rules/<int:id>/', game_rules.view_game_rules, name='game_rules'),
+    path('process_leaderboard/', game_rules.process_leaderboard, name='process_leaderboard'),
     path('create_badge/<int:id>/', game_rules.create_badge, name='create_badge'),
     path('process_badge/', game_rules.process_badge, name='process_badge'),
     path('create_score/<int:id>/', game_rules.create_score, name='create_score'),

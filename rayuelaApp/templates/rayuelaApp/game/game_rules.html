@@ -9,6 +9,37 @@
 <div id="content" style="margin: 10px; padding-left: 10px; padding-right: 10px; width: 100%;">
 
 <div class="card-deck" style="margin: 10px;">
+  <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">{{ project.name }} - Clasificaciones </h3>
+    </div>
+    <div class="card-body">
+      <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-leaderboard" aria-expanded="false" aria-controls="collapse-leaderboard" style="margin-bottom: 10px">
+        Ordenamiento
+      </button>
+      <div class="table-responsive collapse" id="collapse-leaderboard" >
+        <form action="/process_leaderboard/" id="send" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- Input oculto pero necesario para mantenerse en el contexto correcto de proyecto -->
+        <input type='hidden' class="form-control" id='project_id' name='project_id' value="{{ project.id }}"></input>
+        <div id="leaderboard" class="form-group">
+          <label id="label_leaderboard">Ordenar clasificación</label>
+          <select id="select_leaderboard" name="select_leaderboard" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+            <option value="points">Por cantidad de puntos</option>
+            <option value="badges">Por cantidad de insignias</option>
+          </select>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-success">Cambiar ordenamiento</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card-deck" style="margin: 10px;">
     <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
     <div class="card card-primary">
       <div class="card-header">
@@ -22,7 +53,7 @@
             <br />
           </form>
         </div>
-        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-badges" aria-expanded="false" aria-controls="collapse-badges">
+        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-badges" aria-expanded="false" aria-controls="collapse-badges" style="margin-bottom: 10px">
           Tabla de Insignias
         </button>
         <div class="table-responsive collapse" id="collapse-badges" >
@@ -81,7 +112,7 @@
             <br />
           </form>
         </div>
-        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-rules" aria-expanded="false" aria-controls="collapse-rules">
+        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-rules" aria-expanded="false" aria-controls="collapse-rules" style="margin-bottom: 10px">
           Tabla de reglas
         </button>
         <div class="table-responsive collapse" id="collapse-rules">
@@ -112,16 +143,16 @@
 
           </tbody>
         </table>
-        </div>
+      </div>
 <!--        <form id="change_state"  method="post" action="/change_state/"   > {% csrf_token %}-->
 <!--          <input type="hidden" id="ge_id" name="ge_id" />-->
 <!--        </form>-->
 <!--        <form id="modify"  method="post" action="/modify/"   > {% csrf_token %}-->
 <!--            <input type="hidden" id="ge_id_" name="ge_id_" />-->
 <!--        </form>-->
-      </div>
     </div>
   </div>
+</div>
 </div>
 {% endblock %}
 {% block scripts %}
