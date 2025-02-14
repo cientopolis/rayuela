@@ -7,6 +7,6 @@ class Leaderboard(models.Model):
     project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
 
     class Meta:
-        verbose_name='Clasificación'
-        verbose_name_plural="Clasificación"
+        verbose_name='Tabla de posiciones'
+        verbose_name_plural="Tablas de posiciones"
         db_table='leaderboard'

@@ -12,29 +12,22 @@
   <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
   <div class="card card-primary">
     <div class="card-header">
-      <h3 class="card-title">{{ project.name }} - Clasificaciones </h3>
+      <h3 class="card-title">{{ project.name }} - Tabla de posiciones </h3>
     </div>
     <div class="card-body">
-      <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-leaderboard" aria-expanded="false" aria-controls="collapse-leaderboard" style="margin-bottom: 10px">
-        Ordenamiento
-      </button>
-      <div class="table-responsive collapse" id="collapse-leaderboard" >
-        <form action="/process_leaderboard/" id="send" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <!-- Input oculto pero necesario para mantenerse en el contexto correcto de proyecto -->
+      <form action="/process_leaderboard/" id="send" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <!-- Input oculto pero necesario para mantenerse en el contexto correcto de proyecto -->
         <input type='hidden' class="form-control" id='project_id' name='project_id' value="{{ project.id }}"></input>
         <div id="leaderboard" class="form-group">
-          <label id="label_leaderboard">Ordenar clasificación</label>
+          <label id="label_leaderboard">Ordenar tabla por: </label>
           <select id="select_leaderboard" name="select_leaderboard" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
-            <option value="points">Por cantidad de puntos</option>
-            <option value="badges">Por cantidad de insignias</option>
+            <option value="points">Cantidad de puntos</option>
+            <option value="badges">Cantidad de insignias</option>
           </select>
         </div>
-        <div class="card-footer">
           <button type="submit" class="btn btn-success">Cambiar ordenamiento</button>
-        </div>
       </form>
-      </div>
     </div>
   </div>
 </div>
@@ -54,13 +47,12 @@
           </form>
         </div>
         <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-badges" aria-expanded="false" aria-controls="collapse-badges" style="margin-bottom: 10px">
-          Tabla de Insignias
+          Ver/Ocultar Tabla de insignias
         </button>
         <div class="table-responsive collapse" id="collapse-badges" >
         <table id="table-badge" class="table table-bordered">
           <thead class="table-primary">
             <tr>
-              <th style="width: 10px">#</th>
               <th style="width: 10px">Insignia</th>
               <th style="width: 200px">Nombre</th>
               <th style="width: 200px">Descripción</th>
@@ -73,7 +65,6 @@
           <tbody>
             {% for badge in badges %}
             <tr >
-              <td class="table-success">{{ badge.id }}</td>
               <td><img src="{{ badge.image.url }} " width=36" height="36"></td>
               <td>{{ badge.name }}</td>
               <td>{{ badge.description }}</td>
@@ -102,7 +93,7 @@
     <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
     <div class="card card-primary">
       <div class="card-header">
-        <h3 class="card-title">{{ project.name }} - Reglas </h3>
+        <h3 class="card-title">{{ project.name }} - Reglas de puntaje </h3>
       </div>
       <div class="card-body">
         <div>
@@ -113,13 +104,12 @@
           </form>
         </div>
         <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapse-rules" aria-expanded="false" aria-controls="collapse-rules" style="margin-bottom: 10px">
-          Tabla de reglas
+          Ver/Ocultar Tabla de reglas
         </button>
         <div class="table-responsive collapse" id="collapse-rules">
         <table id="table-score" class="table table-bordered">
           <thead class="table-primary">
             <tr>
-              <th style="width: 10px">#</th>
               <th style="width: 50px">Nombre</th>
               <th style="width: 10px">Puntos</th>
               <th style="width: 10px">Borrar/Restaurar</th>
@@ -131,7 +121,6 @@
           {% for score in scores.all %}
             {% for score_list in score.scores.all %}
             <tr >
-              <td class="table-success">{{ score_list.id }}</td>
               <td>{{ score_list.name }}</td>
               <td>{{ score_list.points }}</td>
 

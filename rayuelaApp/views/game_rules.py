@@ -28,7 +28,7 @@ def view_game_rules(request, id):
 
 '''
 ==========================
-      Clasificacion
+    Tabla de posiciones
 ==========================
 '''
 
