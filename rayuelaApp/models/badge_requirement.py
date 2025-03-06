@@ -1,9 +1,12 @@
 from django.db import models
 from rayuelaApp.models.task_type import TaskType
+from rayuelaApp.models.time_restriction import TimeRestriction
+from rayuelaApp.models.project_subarea import ProjectSubArea
 
 class BadgeRequirement(models.Model):
-    #name = models.CharField(max_length=30)
-    task_type = models.ForeignKey(TaskType, on_delete=models.DO_NOTHING)
+    task_type = models.ForeignKey(TaskType, on_delete=models.DO_NOTHING, blank=True, null=True)
+    time_restriction = models.ForeignKey(TimeRestriction, on_delete=models.DO_NOTHING, blank=True, null=True)
+    sub_area = models.ForeignKey(ProjectSubArea, on_delete=models.DO_NOTHING, blank=True, null=True)
     times = models.IntegerField(blank=False, null=False, default=0)
     badge_id = models.IntegerField(blank=False, null=False, default=0)
 

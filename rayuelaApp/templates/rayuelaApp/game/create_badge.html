@@ -39,13 +39,39 @@ crossorigin=""/>
             <div id="requeriments">
               <h4>Requerimientos para conseguir la insignia</h4>
             </div>
-            <div class="form-group">
-              <label>Tipo de tarea</label>
-              <select id="requirements_task_type" name="requirements_task_type" class="form-control select2-info" data-dropdown-css-class="select2-info" data-placeholder="Seleccionar tipo de tarea" style="width: 100%;" required>
+            <div id="criterion_div">
+              <div class="form-group">
+                <label>Criterio</label>
+                <select id="criterion" name="criterion" onchange="changeCriterion()" class="form-control select2-info" data-dropdown-css-class="select2-info" data-placeholder="Seleccionar criterio" style="width: 100%;" required>
+                  <option value="task_type">Tipo de tarea</option>
+                  <option value="time_restriction">Intervalo de tiempo</option>
+                  <option value="area">Área</option>
+                </select>
+              </div>
+              <div id="task_types" class="form-group">
+                <label id="label_task_types">Tipos de tarea</label>
+                <select id="select_task_types" name="select_task_types" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
                   {% for task_type in project.task_types.all %}
                   <option value="{{task_type.id}}">{{ task_type.name }}</option>
                   {% endfor %}
-              </select>
+                </select>
+              </div>
+              <div id="time_restrictions" class="form-group">
+                <label id="label_time_restrictions">Intervalos de tiempo</label>
+                <select id="select_time_restrictions" name="select_time_restrictions" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+                  {% for time_restriction in project.time_restriction.all %}
+                  <option value="{{time_restriction.id}}">{{ time_restriction.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div id="areas" class="form-group">
+                <label id="label_areas">Áreas</label>
+                <select id="select_areas" name="select_areas" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+                  {% for area in sub_areas.all %}
+                  <option value="{{area.id}}">{{ area.number }}</option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
             <div class="form-group">
                 <label>Insignia Requerida</label>
@@ -74,4 +100,5 @@ crossorigin=""/>
 
 {% block scripts %}
 <script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'dist/js/badge.js' %}"></script>
 {% endblock %}
