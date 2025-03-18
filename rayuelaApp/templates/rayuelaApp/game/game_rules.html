@@ -20,6 +20,13 @@
       <!-- Input oculto pero necesario para mantenerse en el contexto correcto de proyecto -->
         <input type='hidden' class="form-control" id='project_id' name='project_id' value="{{ project.id }}"></input>
         <div id="leaderboard" class="form-group">
+          <p>Ordenamiento actual:
+            {% if leaderboard.first.order_by_points %}
+              <b>Por cantidad de puntos</b>
+             {% else %}
+              <b>Por cantidad de insignias</b>
+             {% endif %}
+          </p>
           <label id="label_leaderboard">Ordenar tabla por: </label>
           <select id="select_leaderboard" name="select_leaderboard" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
             <option value="points">Cantidad de puntos</option>

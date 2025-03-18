@@ -24,7 +24,7 @@ Reglas de juego - General
 def view_game_rules(request, id):
     if System.is_logged(request):
         if System.is_admin(request):
-           return render(request, 'rayuelaApp/game/game_rules.html', {'nav': 'block', 'project': Project.objects.get(id=id), 'badges': Badge.objects.filter(project=id), 'scores': Score.objects.filter(project=id)})
+           return render(request, 'rayuelaApp/game/game_rules.html', {'nav': 'block', 'project': Project.objects.get(id=id), 'badges': Badge.objects.filter(project=id), 'scores': Score.objects.filter(project=id), 'leaderboard': Leaderboard.objects.filter(project=id)})
         return redirect('home')
     return redirect('index')
 
