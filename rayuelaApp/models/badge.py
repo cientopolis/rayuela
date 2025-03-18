@@ -9,6 +9,7 @@ class Badge(models.Model):
     image = models.ImageField(upload_to='rayuelaApp/static/badge_image/', default='rayuelaApp/static/badge_image/badge.png', null=False, blank=False)
     requirements = models.ForeignKey(BadgeRequirement, related_name="Requerimientos", on_delete=models.DO_NOTHING)
     project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
+    available = models.BooleanField(default=True)
 
     class Meta:
         verbose_name='Badge'
