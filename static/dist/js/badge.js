@@ -1,7 +1,5 @@
 function init(){
-    document.getElementById('task_types').style.display = '';
-    document.getElementById('time_restrictions').style.display = 'none';
-    document.getElementById('areas').style.display = 'none';
+    changeCriterion()
 };
 
 function taskTypesSelected(){

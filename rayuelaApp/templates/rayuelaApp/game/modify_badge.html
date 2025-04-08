@@ -1,0 +1,105 @@
+{% extends 'rayuelaApp/base/base.html' %}
+{% load static %}
+{% block title %}
+  Modificar insignia
+{% endblock %}
+
+{% block link %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin=""/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-6 mb-5 mt-0">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">{{project.name}} - Modificar Insignia</h3>
+      </div>
+      <!-- /.card-header -->
+      <!-- form start -->
+      <form action="/process_modify_badge/" id="send" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+          <div class="col-12 col-md-12">
+            <!-- Input oculto pero necesario para mantenerse en el contexto correcto de proyecto -->
+            <input type='hidden' class="form-control" id='project_id' name='project_id' value="{{ project.id }}"></input>
+            <input type='hidden' class="form-control" id='badge_id' name='badge_id' value="{{ badge.id }}"></input>
+            <div class="form-group">
+              <label>Nombre de la insignia</label>
+              <input type="text" class="form-control" id="name" name="name" value="{{badge.name}}" required>
+            </div>
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea class="form-control" id="description" name="description" required>{{badge.description}}</textarea>
+            </div>
+            <div class="form-group">
+              <label>Imagen actual de la insignia</label>
+              <img src="{{badge.image.url}}" width=36" height="36">
+              <input type="file" class="form-control-file" id="image" accept="image/*" name="image"/>
+            </div>
+            <div id="requeriments">
+              <h4>Requerimientos para conseguir la insignia</h4>
+            </div>
+            <div id="criterion_div">
+              <div class="form-group">
+                <label>Criterio</label>
+                <select id="criterion" name="criterion" onchange="changeCriterion()" class="form-control select2-info" data-dropdown-css-class="select2-info" data-placeholder="Seleccionar criterio" style="width: 100%;" required>
+                  <option value="task_type" {% if badge.requirements.task_type %} selected {% endif %}> Tipo de tarea</option>
+                  <option value="time_restriction" {% if badge.requirements.time_restriction %} selected {% endif %}>Intervalo de tiempo</option>
+                  <option value="area" {% if badge.requirements.sub_area %} selected {% endif %}>Área</option>
+                </select>
+              </div>
+              <div id="task_types" class="form-group">
+                <label id="label_task_types">Tipos de tarea</label>
+                <select id="select_task_types" name="select_task_types" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+                  {% for task_type in project.task_types.all %}
+                  <option value="{{task_type.id}}" {% if badge.requirements.task_type.id == task_type.id %} selected {% endif %}>{{ task_type.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div id="time_restrictions" class="form-group">
+                <label id="label_time_restrictions">Intervalos de tiempo</label>
+                <select id="select_time_restrictions" name="select_time_restrictions" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+                  {% for time_restriction in project.time_restriction.all %}
+                  <option value="{{time_restriction.id}}" {% if badge.requirements.time_restriction.id == time_restriction.id %} selected {% endif %}>{{ time_restriction.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div id="areas" class="form-group">
+                <label id="label_areas">Áreas</label>
+                <select id="select_areas" name="select_areas" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+                  {% for area in sub_areas.all %}
+                  <option value="{{area.id}}" {% if badge.requirements.sub_area.id == area.id %} selected {% endif %}>{{ area.number }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+                <label>Insignia Requerida</label>
+                <select id="requirements_badge_id" name="requirements_badge_id" class="form-control select2 select2-info" data-dropdown-css-class="select2-info"  data-placeholder="Seleccionar insignia" style="width: 100%;" required>
+                  <option value='0'>Ninguna</option>
+                  {% for badge_list in badges %}
+                  <option value='{{ badge_list.id }}' {% if badge.requirements.badge_id == badge_list.id %} selected {% endif %}>{{ badge_list.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            <div class="form-group">
+              <label >Cantidad de veces a realizar la tarea para obtener la insignia</label>
+              <input type="number" class="form-control" id="requirements_times" name="requirements_times" value="{{badge.requirements.times}}" required>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'dist/js/badge.js' %}"></script>
+{% endblock %}

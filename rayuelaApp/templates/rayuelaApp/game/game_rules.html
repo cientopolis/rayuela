@@ -60,6 +60,7 @@
         <table id="table-badge" class="table table-bordered">
           <thead class="table-primary">
             <tr>
+              <th style="width: 10px">ID</th>
               <th style="width: 10px">Insignia</th>
               <th style="width: 200px">Nombre</th>
               <th style="width: 200px">Descripción</th>
@@ -72,6 +73,7 @@
           <tbody>
             {% for badge in badges %}
             <tr >
+              <td id="badge_id">{{ badge.id }}</td>
               <td><img src="{{ badge.image.url }} " width=36" height="36"></td>
               <td>{{ badge.name }}</td>
               <td>{{ badge.description }}</td>
@@ -97,7 +99,11 @@
               </td>
 
               <td><button  onclick="send_game_element_id_2('{{ badge.id }}','#change_state');" class="btn btn-block bg-gradient-danger btn-xs">Eliminar</button></td>
-              <td><button  onclick="send_game_element_id_2('{{ badge.id }}','#modify');" class="btn btn-block bg-gradient-info btn-xs">Modificar</button></td>
+              <td>
+                <form action='/modify_badge/{{project.id}}/{{badge.id}}/' method='GET'>
+                  <button class="btn btn-block bg-gradient-info btn-xs">Modificar</button>
+                </form>
+              </td>
             </tr>
             {% endfor %}
 

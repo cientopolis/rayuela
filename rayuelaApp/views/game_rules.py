@@ -92,21 +92,67 @@ def process_badge(request):
         return redirect ('home')
     return redirect ('index')
 
-# def modify(request,ok=False):
-#   if System.is_logged(request):
-#         if System.is_admin(request):
-#           if not ok:
-#             id_= request.POST['ge_id_']
-#           else:
-#             id_=request.POST['id']
-#           ge=GameElement.objects.get_subclass(id=id_)
-#           areas=ge.get_project().get_area().projectsubarea_set.all()
-#           time_restrictions=ge.get_project().get_time_restrictions().all()
-#           if isinstance(ge, Challenge):
-#             return render(request, 'rayuelaApp/game_elements/modify_challenge.html',{'nav':'block','modify_challenge':System.get_navbar_color,'challenge':ge, 'areas':areas,'time_restrictions':time_restrictions})
-#           return render(request, 'rayuelaApp/game_elements/modify_badge.html',{'nav':'block','modify_badge':System.get_navbar_color,'badge':ge,'areas':areas,'time_restrictions':time_restrictions,'badges':Badge.objects.filter(project_id=ge.get_id_project()).all()})
-#         return redirect('home')
-#   return redirect('index')
+def modify_badge(request, project_id, badge_id):
+    if System.is_logged(request):
+        if System.is_admin(request):
+           return render(request, 'rayuelaApp/game/modify_badge.html', {'nav': 'block', 'project': Project.objects.get(id=project_id), 'badges': Badge.objects.filter(project=project_id), 'sub_areas': ProjectSubArea.objects.filter(area=Project.objects.get(id=project_id).area), 'badge': Badge.objects.get(id=badge_id)})
+        return redirect('home')
+    return redirect('index')
+
+def process_modify_badge(request):
+    if System.is_logged(request):
+        if System.is_admin(request):
+            request.session['project_id']=request.POST['project_id']
+            request.session['badge_id'] = request.POST['badge_id']
+            if not request.POST['name'] or not request.POST['description'] or not request.POST['requirements_badge_id'] or not request.POST['requirements_times']:
+                messages.error(request, 'Debe ingresar todos los campos')
+                return modify_badge(request, request.session['project_id'], request.session['badge_id'])
+            else:
+                badge = Badge.objects.get(id=request.session['badge_id'])
+                criterion = request.POST.get('criterion')
+                if criterion == "task_type":
+                    if badge.requirements.task_type:
+                        requirements = BadgeRequirement.objects.get(id=badge.requirements.id)
+                        requirements.task_type = TaskType.objects.get(id=request.POST['select_task_types'])
+                        requirements.badge_id = request.POST['requirements_badge_id']
+                        requirements.times = request.POST['requirements_times']
+                        requirements.save()
+                    else:
+                        requirements = BadgeRequirement(task_type=TaskType.objects.get(id=request.POST['select_task_types']), badge_id=request.POST['requirements_badge_id'], times=request.POST['requirements_times'])
+                        requirements.save()
+                        badge.requirements = requirements
+                elif criterion == "time_restriction":
+                    if badge.requirements.time_restriction:
+                        requirements = BadgeRequirement.objects.get(id=badge.requirements.id)
+                        badge.requirements.time_restriction = TimeRestriction.objects.get(id=request.POST['select_time_restrictions'])
+                        badge.requirements.badge_id = request.POST['requirements_badge_id']
+                        badge.requirements.times = request.POST['requirements_times']
+                        requirements.save()
+                    else:
+                        requirements = BadgeRequirement(time_restriction=TimeRestriction.objects.get(id=request.POST['select_time_restrictions']), badge_id=request.POST['requirements_badge_id'], times=request.POST['requirements_times'])
+                        requirements.save()
+                        badge.requirements = requirements
+                else:
+                    if badge.requirements.sub_area:
+                        requirements = BadgeRequirement.objects.get(id=badge.requirements.id)
+                        badge.requirements.sub_area = ProjectSubArea.objects.get(id=request.POST['select_areas'])
+                        badge.requirements.badge_id = request.POST['requirements_badge_id']
+                        badge.requirements.times = request.POST['requirements_times']
+                        requirements.save()
+                    else:
+                        requirements = BadgeRequirement(sub_area=ProjectSubArea.objects.get(id=request.POST['select_areas']), badge_id=request.POST['requirements_badge_id'], times=request.POST['requirements_times'])
+                        requirements.save()
+                        badge.requirements = requirements
+                badge.name=request.POST['name']
+                badge.description=request.POST['description']
+                badge.save()
+                if request.FILES:
+                    form = BadgeForm(data=request.POST, files=request.FILES, instance=badge)
+                    form.procces(badge.get_path_image())
+                messages.success(request, 'Se ha modificado correctamente')
+                return redirect(reverse('game_rules', kwargs={'id': request.POST['project_id']}))
+        return redirect ('home')
+    return redirect ('index')
 
 '''
 ==========================
