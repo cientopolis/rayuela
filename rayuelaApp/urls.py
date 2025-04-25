@@ -37,6 +37,7 @@ urlpatterns = [
     path('process_leaderboard/', game_rules.process_leaderboard, name='process_leaderboard'),
     path('create_badge/<int:id>/', game_rules.create_badge, name='create_badge'),
     path('process_badge/', game_rules.process_badge, name='process_badge'),
+    path('delete_badge/<int:project_id>/<int:badge_id>/', game_rules.delete_badge, name='delete_badge'),
     path('modify_badge/<int:project_id>/<int:badge_id>/',game_rules.modify_badge, name='modify_badge'),
     path('process_modify_badge/', game_rules.process_modify_badge, name='process_modify_badge'),
     path('create_score/<int:id>/', game_rules.create_score, name='create_score'),

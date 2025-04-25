@@ -61,7 +61,7 @@ def process_leaderboard(request):
 def create_badge(request, id):
     if System.is_logged(request):
         if System.is_admin(request):
-           return render(request, 'rayuelaApp/game/create_badge.html', {'nav': 'block', 'project': Project.objects.get(id=id), 'badges': Badge.objects.filter(project=id), 'sub_areas': ProjectSubArea.objects.filter(area=Project.objects.get(id=id).area)})
+           return render(request, 'rayuelaApp/game/create_badge.html', {'nav': 'block', 'project': Project.objects.get(id=id), 'badges': Badge.objects.filter(project=id, available=True), 'sub_areas': ProjectSubArea.objects.filter(area=Project.objects.get(id=id).area)})
         return redirect('home')
     return redirect('index')
 
@@ -92,10 +92,26 @@ def process_badge(request):
         return redirect ('home')
     return redirect ('index')
 
+def delete_badge(request, project_id, badge_id):
+    if System.is_logged(request):
+        if System.is_admin(request):
+            badge = Badge.objects.get(id=badge_id)
+            requirements = BadgeRequirement.objects.filter(badge_id=badge_id)
+            if requirements:
+                for requirement in requirements:
+                    requirement.badge_id=0
+                    requirement.save()
+            badge.available = False
+            badge.save()
+            messages.success(request, 'Se ha eliminado correctamente')
+            return redirect(reverse('game_rules', kwargs={'id': project_id}))
+        return redirect('home')
+    return redirect('index')
+
 def modify_badge(request, project_id, badge_id):
     if System.is_logged(request):
         if System.is_admin(request):
-           return render(request, 'rayuelaApp/game/modify_badge.html', {'nav': 'block', 'project': Project.objects.get(id=project_id), 'badges': Badge.objects.filter(project=project_id), 'sub_areas': ProjectSubArea.objects.filter(area=Project.objects.get(id=project_id).area), 'badge': Badge.objects.get(id=badge_id)})
+           return render(request, 'rayuelaApp/game/modify_badge.html', {'nav': 'block', 'project': Project.objects.get(id=project_id), 'badges': Badge.objects.filter(project=project_id, available=True), 'sub_areas': ProjectSubArea.objects.filter(area=Project.objects.get(id=project_id).area), 'badge': Badge.objects.get(id=badge_id)})
         return redirect('home')
     return redirect('index')
 
@@ -124,9 +140,9 @@ def process_modify_badge(request):
                 elif criterion == "time_restriction":
                     if badge.requirements.time_restriction:
                         requirements = BadgeRequirement.objects.get(id=badge.requirements.id)
-                        badge.requirements.time_restriction = TimeRestriction.objects.get(id=request.POST['select_time_restrictions'])
-                        badge.requirements.badge_id = request.POST['requirements_badge_id']
-                        badge.requirements.times = request.POST['requirements_times']
+                        requirements.time_restriction = TimeRestriction.objects.get(id=request.POST['select_time_restrictions'])
+                        requirements.badge_id = request.POST['requirements_badge_id']
+                        requirements.times = request.POST['requirements_times']
                         requirements.save()
                     else:
                         requirements = BadgeRequirement(time_restriction=TimeRestriction.objects.get(id=request.POST['select_time_restrictions']), badge_id=request.POST['requirements_badge_id'], times=request.POST['requirements_times'])
@@ -135,9 +151,9 @@ def process_modify_badge(request):
                 else:
                     if badge.requirements.sub_area:
                         requirements = BadgeRequirement.objects.get(id=badge.requirements.id)
-                        badge.requirements.sub_area = ProjectSubArea.objects.get(id=request.POST['select_areas'])
-                        badge.requirements.badge_id = request.POST['requirements_badge_id']
-                        badge.requirements.times = request.POST['requirements_times']
+                        requirements.sub_area = ProjectSubArea.objects.get(id=request.POST['select_areas'])
+                        requirements.badge_id = request.POST['requirements_badge_id']
+                        requirements.times = request.POST['requirements_times']
                         requirements.save()
                     else:
                         requirements = BadgeRequirement(sub_area=ProjectSubArea.objects.get(id=request.POST['select_areas']), badge_id=request.POST['requirements_badge_id'], times=request.POST['requirements_times'])

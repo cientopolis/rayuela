@@ -98,7 +98,10 @@
                   {% endif %}
               </td>
 
-              <td><button  onclick="send_game_element_id_2('{{ badge.id }}','#change_state');" class="btn btn-block bg-gradient-danger btn-xs">Eliminar</button></td>
+              <td>
+                <form action='/delete_badge/{{project.id}}/{{badge.id}}/' method='GET'>
+                  <button class="btn btn-block bg-gradient-danger btn-xs">Eliminar</button>
+                </form>
               <td>
                 <form action='/modify_badge/{{project.id}}/{{badge.id}}/' method='GET'>
                   <button class="btn btn-block bg-gradient-info btn-xs">Modificar</button>
