@@ -153,15 +153,12 @@
           <tbody>
 
           {% for score in scores.all %}
-            {% for score_list in score.scores.all %}
             <tr >
-              <td>{{ score_list.name }}</td>
-              <td>{{ score_list.points }}</td>
-
+              <td>{{ score.name }}</td>
+              <td>{{ score.points }}</td>
               <td><button  onclick="send_game_element_id_2('{{ badge.id }}','#change_state');" class="btn btn-block bg-gradient-danger btn-xs">Eliminar</button></td>
               <td><button  onclick="send_game_element_id_2('{{ badge.id }}','#modify');" class="btn btn-block bg-gradient-info btn-xs">Modificar</button></td>
             </tr>
-            {% endfor %}
           {% endfor %}
 
           </tbody>

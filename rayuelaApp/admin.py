@@ -11,9 +11,6 @@ from rayuelaApp.models.check_in import CheckIn
 from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.models.time_restriction import TimeRestriction
 from rayuelaApp.models.task_type import TaskType
-from rayuelaApp.models.score_allocation_strategy import ScoreByCheckin, ScoreByTaskType, ScoreByTimerRestriction, ScoreByArea
-from rayuelaApp.models.score import Score
-
 
 class UserAdmin(admin.ModelAdmin):
     list_display=('id','complete_name','username','email','password','profile_image','verified','role_id')
@@ -58,21 +55,6 @@ class TimeRestrictionAdmin(admin.ModelAdmin):
 class TaskTypeAdmin(admin.ModelAdmin):
     list_display= ('id','name','description')
 
-class ScoreByCheckinAdmin(admin.ModelAdmin):
-    list_display= ('id','points')
-
-class ScoreByTaskTypeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'points')
-
-class ScoreByTimerRestrictionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'points')
-
-class ScoreByAreaAdmin(admin.ModelAdmin):
-    list_display= ('id','points')
-
-class ScoreAdmin(admin.ModelAdmin):
-    list_display= ('id','project')
-
 admin.site.register(Role,RoleAdmin)
 admin.site.register(User,UserAdmin)
 admin.site.register(Token,TokenAdmin)
@@ -84,8 +66,4 @@ admin.site.register(Scoring,ScoringAdmin)
 admin.site.register(Criteria,CriteriaAdmin)
 admin.site.register(Day,DayAdmin)
 admin.site.register(TaskType,TaskTypeAdmin)
-admin.site.register(ScoreByCheckin,ScoreByCheckinAdmin)
-admin.site.register(ScoreByTaskType,ScoreByTaskTypeAdmin)
-admin.site.register(ScoreByTimerRestriction,ScoreByTimerRestrictionAdmin)
-admin.site.register(ScoreByArea,ScoreByAreaAdmin)
-admin.site.register(Score,ScoreAdmin)
+admin.site.register(TimeRestriction,TimeRestrictionAdmin)

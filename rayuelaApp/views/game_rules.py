@@ -1,11 +1,8 @@
 from django.shortcuts import redirect, render, reverse
+from django.contrib import messages
 
 from rayuelaApp.models.project import Project
 from rayuelaApp.models.badge import Badge
-from rayuelaApp.models.score import Score
-from rayuelaApp.models.score_allocation_strategy import ScoreByCheckin, ScoreByTaskType, ScoreByTimerRestriction, \
-    ScoreByArea
-from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.models.badge_requirement import BadgeRequirement
 from rayuelaApp.models.leaderboard import Leaderboard
 from rayuelaApp.forms import BadgeForm
@@ -13,7 +10,7 @@ from rayuelaApp.models.task_type import TaskType
 from rayuelaApp.models.time_restriction import TimeRestriction
 from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.utils.System import System
-from django.contrib import messages
+from rayuelaApp.models.score_allocation_strategy import ScoreAllocationStrategy
 
 '''
 ==========================
@@ -24,7 +21,7 @@ Reglas de juego - General
 def view_game_rules(request, id):
     if System.is_logged(request):
         if System.is_admin(request):
-           return render(request, 'rayuelaApp/game/game_rules.html', {'nav': 'block', 'project': Project.objects.get(id=id), 'badges': Badge.objects.filter(project=id, available=True), 'scores': Score.objects.filter(project=id), 'leaderboard': Leaderboard.objects.filter(project=id)})
+           return render(request, 'rayuelaApp/game/game_rules.html', {'nav': 'block', 'project': Project.objects.get(id=id), 'badges': Badge.objects.filter(project=id, available=True), 'scores': ScoreAllocationStrategy.objects.filter(project=id), 'leaderboard': Leaderboard.objects.filter(project=id)})
         return redirect('home')
     return redirect('index')
 
@@ -192,39 +189,19 @@ def process_score(request):
                 return create_score(request, request.session['project_id'])
             else:
                 criterion = request.POST.get('criterion')
-                # TODO:
-                #  Quitar criterian_id=0 (ver si por default alcanza)
-                #  Averiguar si ya existe un checkin ( con contribution_id=0 u otra forma) y en ese caso editarlo en lugar de crearlo
-                #  Usar if/else similar al de process_leaderboard
                 if not request.POST.get('is_contribution'):
-                    checkin = ScoreByCheckin(name=request.POST.get('name'), criterian_id=0, points=request.POST.get('points'))
-                    checkin.save()
-                    score = Score(project=Project.objects.get(id=request.POST['project_id']))
-                    score.save()
-                    score.add_score(checkin)
+                    score = ScoreAllocationStrategy(project=Project.objects.get(id=request.POST['project_id']), name=request.POST.get('name'), checkin=True, points=request.POST.get('points'))
                 else:
-                    # TODO: hay que identificar de qué criterio era, sino no se puede obtener luego
                     if criterion == "task_type":
-                        task_type = ScoreByTaskType(name=request.POST.get('name'), criterian_id=request.POST.get('select_task_types'),
+                        score = ScoreAllocationStrategy(project=Project.objects.get(id=request.POST['project_id']), name=request.POST.get('name'), task_type=TaskType.objects.get(id=request.POST.get('select_task_types')),
                                                  points=request.POST.get('points'))
-                        score = Score(project=Project.objects.get(id=request.POST['project_id']))
-                        task_type.save()
-                        score.save()
-                        score.add_score(task_type)
                     elif criterion == "time_restriction":
-                        time_restriction = ScoreByTimerRestriction(name=request.POST.get('name'), criterian_id=request.POST.get('select_time_restrictions'),
+                        score = ScoreAllocationStrategy(project=Project.objects.get(id=request.POST['project_id']), name=request.POST.get('name'), time_restriction=TimeRestriction.objects.get(id=request.POST.get('select_time_restrictions')),
                                                  points=request.POST.get('points'))
-                        score = Score(project=Project.objects.get(id=request.POST['project_id']))
-                        time_restriction.save()
-                        score.save()
-                        score.add_score(time_restriction)
                     else:
-                        area = ScoreByArea(name=request.POST.get('name'), criterian_id=request.POST.get('select_areas'),
+                        score = ScoreAllocationStrategy(project=Project.objects.get(id=request.POST['project_id']), name=request.POST.get('name'), sub_area=ProjectSubArea.objects.get(id=request.POST.get('select_areas')),
                                                  points=request.POST.get('points'))
-                        score = Score(project=Project.objects.get(id=request.POST['project_id']))
-                        area.save()
-                        score.save()
-                        score.add_score(area)
+                score.save()
                 messages.success(request, 'Se ha creado correctamente')
                 return redirect(reverse('game_rules', kwargs={'id': request.POST['project_id']}))
         return redirect ('home')
