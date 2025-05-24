@@ -60,20 +60,18 @@
         <table id="table-badge" class="table table-bordered">
           <thead class="table-primary">
             <tr>
-              <th style="width: 10px">ID</th>
               <th style="width: 10px">Insignia</th>
               <th style="width: 200px">Nombre</th>
               <th style="width: 200px">Descripción</th>
               <th style="width: 200px">Criterio</th>
               <th style="width: 50px">Insignia requerida</th>
-              <th style="width: 10px">Borrar/Restaurar</th>
+              <th style="width: 10px">Eliminar</th>
               <th style="width: 10px">Modificar</th>
             </tr>
           </thead>
           <tbody>
             {% for badge in badges %}
             <tr >
-              <td id="badge_id">{{ badge.id }}</td>
               <td><img src="{{ badge.image.url }} " width=36" height="36"></td>
               <td>{{ badge.name }}</td>
               <td>{{ badge.description }}</td>
@@ -88,7 +86,7 @@
                   {% endif %}
               </td>
               <td>{% if badge.requirements.badge_id == 0 %}
-                    No
+                    ---
                   {% else %}
                     {% for badge_required in badges %}
                       {% if badge_required.id == badge.requirements.badge_id %}
@@ -97,11 +95,11 @@
                     {% endfor %}
                   {% endif %}
               </td>
-
               <td>
                 <form action='/delete_badge/{{project.id}}/{{badge.id}}/' method='GET'>
                   <button class="btn btn-block bg-gradient-danger btn-xs">Eliminar</button>
                 </form>
+              </td>
               <td>
                 <form action='/modify_badge/{{project.id}}/{{badge.id}}/' method='GET'>
                   <button class="btn btn-block bg-gradient-info btn-xs">Modificar</button>
@@ -109,16 +107,9 @@
               </td>
             </tr>
             {% endfor %}
-
           </tbody>
         </table>
         </div>
-<!--        <form id="change_state"  method="post" action="/change_state/"   > {% csrf_token %}-->
-<!--          <input type="hidden" id="ge_id" name="ge_id" />-->
-<!--        </form>-->
-<!--        <form id="modify"  method="post" action="/modify/"   > {% csrf_token %}-->
-<!--            <input type="hidden" id="ge_id_" name="ge_id_" />-->
-<!--        </form>-->
       </div>
     </div>
   </div>
@@ -145,31 +136,43 @@
           <thead class="table-primary">
             <tr>
               <th style="width: 50px">Nombre</th>
+              <th style="width: 50px">Criterio</th>
               <th style="width: 10px">Puntos</th>
-              <th style="width: 10px">Borrar/Restaurar</th>
+              <th style="width: 10px">Eliminar</th>
               <th style="width: 10px">Modificar</th>
             </tr>
           </thead>
           <tbody>
-
-          {% for score in scores.all %}
+          {% for score in scores %}
             <tr >
               <td>{{ score.name }}</td>
+              <td>
+                {% if score.checkin %}
+                  Checkin
+                {% elif score.task_type %}
+                  Tipo de tarea
+                {% elif score.time_restriction %}
+                  Intervalo de tiempo
+                {% else %}
+                  Área
+                {% endif %}
+              </td>
               <td>{{ score.points }}</td>
-              <td><button  onclick="send_game_element_id_2('{{ badge.id }}','#change_state');" class="btn btn-block bg-gradient-danger btn-xs">Eliminar</button></td>
-              <td><button  onclick="send_game_element_id_2('{{ badge.id }}','#modify');" class="btn btn-block bg-gradient-info btn-xs">Modificar</button></td>
+              <td>
+                <form action='/delete_score/{{project.id}}/{{score.id}}/' method='GET'>
+                  <button class="btn btn-block bg-gradient-danger btn-xs">Eliminar</button>
+                </form>
+              </td>
+              <td>
+                <form action='/modify_score/{{project.id}}/{{score.id}}/' method='GET'>
+                  <button class="btn btn-block bg-gradient-info btn-xs">Modificar</button>
+                </form>
+              </td>
             </tr>
           {% endfor %}
-
           </tbody>
         </table>
       </div>
-<!--        <form id="change_state"  method="post" action="/change_state/"   > {% csrf_token %}-->
-<!--          <input type="hidden" id="ge_id" name="ge_id" />-->
-<!--        </form>-->
-<!--        <form id="modify"  method="post" action="/modify/"   > {% csrf_token %}-->
-<!--            <input type="hidden" id="ge_id_" name="ge_id_" />-->
-<!--        </form>-->
     </div>
   </div>
 </div>

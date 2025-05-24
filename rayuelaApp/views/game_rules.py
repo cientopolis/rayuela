@@ -190,7 +190,12 @@ def process_score(request):
             else:
                 criterion = request.POST.get('criterion')
                 if not request.POST.get('is_contribution'):
-                    score = ScoreAllocationStrategy(project=Project.objects.get(id=request.POST['project_id']), name=request.POST.get('name'), checkin=True, points=request.POST.get('points'))
+                    checkin = ScoreAllocationStrategy.objects.filter(project=Project.objects.get(id=request.POST['project_id']), checkin=True)
+                    if checkin:
+                        messages.error(request, 'El checkin de este proyecto ya existe, en esta sección puede editarse.')
+                        return modify_score(request, request.session['project_id'], checkin[0].id)
+                    else:
+                        score = ScoreAllocationStrategy(project=Project.objects.get(id=request.POST['project_id']), name=request.POST.get('name'), checkin=True, points=request.POST.get('points'))
                 else:
                     if criterion == "task_type":
                         score = ScoreAllocationStrategy(project=Project.objects.get(id=request.POST['project_id']), name=request.POST.get('name'), task_type=TaskType.objects.get(id=request.POST.get('select_task_types')),
@@ -201,6 +206,63 @@ def process_score(request):
                     else:
                         score = ScoreAllocationStrategy(project=Project.objects.get(id=request.POST['project_id']), name=request.POST.get('name'), sub_area=ProjectSubArea.objects.get(id=request.POST.get('select_areas')),
                                                  points=request.POST.get('points'))
+                score.save()
+                messages.success(request, 'Se ha creado correctamente')
+                return redirect(reverse('game_rules', kwargs={'id': request.POST['project_id']}))
+        return redirect ('home')
+    return redirect ('index')
+
+def delete_score(request, project_id, score_id):
+    if System.is_logged(request):
+        if System.is_admin(request):
+            score = ScoreAllocationStrategy.objects.get(id=score_id)
+            score.delete()
+            messages.success(request, 'Se ha eliminado correctamente')
+            return redirect(reverse('game_rules', kwargs={'id': project_id}))
+        return redirect('home')
+    return redirect('index')
+
+def modify_score(request, project_id, score_id):
+    if System.is_logged(request):
+        if System.is_admin(request):
+           return render(request, 'rayuelaApp/game/modify_score.html', {'nav': 'block', 'project': Project.objects.get(id=project_id), 'score': ScoreAllocationStrategy.objects.get(id=score_id), 'sub_areas': ProjectSubArea.objects.filter(area=Project.objects.get(id=project_id).area)})
+        return redirect('home')
+    return redirect('index')
+
+def process_modify_score(request):
+    if System.is_logged(request):
+        if System.is_admin(request):
+            request.session['project_id']=request.POST['project_id']
+            request.session['score_id'] = request.POST['score_id']
+            if not request.POST['name']:
+                messages.error(request, 'Debe ingresar todos los campos')
+                return modify_score(request, request.session['project_id'], request.session['score_id'])
+            else:
+                criterion = request.POST.get('criterion')
+                score = ScoreAllocationStrategy.objects.get(id=request.session['score_id'])
+                if not request.POST.get('is_contribution'):
+                    score.checkin = True
+                    score.task_type = None
+                    score.time_restriction = None
+                    score.sub_area = None
+                else:
+                    if criterion == "task_type":
+                        score.checkin = False
+                        score.task_type = TaskType.objects.get(id=request.POST['select_task_types'])
+                        score.time_restriction = None
+                        score.sub_area = None
+                    elif criterion == "time_restriction":
+                        score.checkin = False
+                        score.task_type = None
+                        score.time_restriction = TimeRestriction.objects.get(id=request.POST['select_time_restrictions'])
+                        score.sub_area = None
+                    else:
+                        score.checkin = False
+                        score.task_type = None
+                        score.time_restriction = None
+                        score.sub_area = ProjectSubArea.objects.get(id=request.POST['select_areas'])
+                score.name = request.POST.get('name')
+                score.points = request.POST.get('points')
                 score.save()
                 messages.success(request, 'Se ha creado correctamente')
                 return redirect(reverse('game_rules', kwargs={'id': request.POST['project_id']}))

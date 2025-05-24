@@ -1,8 +1,6 @@
 function init(){
-    document.getElementById('task_types').style.display = '';
-    document.getElementById('time_restrictions').style.display = 'none';
-    document.getElementById('areas').style.display = 'none';
-    document.getElementById("is_contribution").checked = true;
+    isContribution();
+    changeCriterion();
 };
 
 function isContribution(){
