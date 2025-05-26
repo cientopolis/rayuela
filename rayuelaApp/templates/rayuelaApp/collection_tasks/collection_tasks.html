@@ -11,11 +11,12 @@
       <div class="card-header">
         <h3 class="card-title">{{ project.name }} - Tareas de recolección </h3>
       </div>
-
       <div class="card-body">
         <div>
-            <form id="automatic_task_generation"  method="post" action="/automatic_task_generation/{{project.id}}/"   > {% csrf_token %}
-            <button type="submit" class="btn btn-block bg-gradient-success" style="margin-bottom: 20px; ">Autogenerar tareas de recolección</button>
+            <form id="automatic_task_generation"  method="post" action="/automatic_task_generation/{{project.id}}/">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-block bg-gradient-success" style="margin-bottom: 20px;" {% if project.collection_tasks.all %} disabled {% endif %}>Autogenerar tareas de recolección</button>
+                <p style="font-size: 18px;"><i>* La generación automática de tareas de recolección sólo es posible si no existe ninguna creada.</i></p>
             </form>
         </div>
         <div class="table-responsive">
@@ -32,7 +33,6 @@
             </tr>
           </thead>
           <tbody>
-
             {% for collection_task in project.collection_tasks.all %}
             <tr>
               <td class="table-success">{{ collection_task.id }}</td>
@@ -44,13 +44,11 @@
               <td><button  onclick="send_game_element_id_2('{{ challenge.id }}','#modify');" class="btn btn-block bg-gradient-info btn-xs">Modificar</button></td>
             </tr>
             {% endfor %}
-
           </tbody>
         </table>
         </div>
       </div>
     </div>
-
         <form id="change_state"  method="post" action="/change_state/"   > {% csrf_token %}
           <input type="hidden" id="ge_id" name="ge_id" />
         </form>
