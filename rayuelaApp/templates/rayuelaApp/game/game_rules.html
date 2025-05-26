@@ -9,7 +9,7 @@
 <div id="content" style="margin: 10px; padding-left: 10px; padding-right: 10px; width: 100%;">
 
 <div class="card-deck" style="margin: 10px;">
-  <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
+  <label class="valid-feedback d-block" style="font-size: 18px;">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
   <div class="card card-primary">
     <div class="card-header">
       <h3 class="card-title">{{ project.name }} - Tabla de posiciones </h3>
@@ -20,12 +20,17 @@
       <!-- Input oculto pero necesario para mantenerse en el contexto correcto de proyecto -->
         <input type='hidden' class="form-control" id='project_id' name='project_id' value="{{ project.id }}"></input>
         <div id="leaderboard" class="form-group">
-          <p>Ordenamiento actual:
+          <p><u>Ordenamiento actual</u>:
+          <b>
+            <i>
             {% if leaderboard.first.order_by_points %}
-              <b>Por cantidad de puntos</b>
+              Por cantidad de puntos
              {% else %}
-              <b>Por cantidad de insignias</b>
+              Por cantidad de insignias
              {% endif %}
+            </i>
+          </b>
+
           </p>
           <label id="label_leaderboard">Ordenar tabla por: </label>
           <select id="select_leaderboard" name="select_leaderboard" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
@@ -40,7 +45,6 @@
 </div>
 
 <div class="card-deck" style="margin: 10px;">
-    <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
     <div class="card card-primary">
       <div class="card-header">
         <h3 class="card-title">{{ project.name }} - Insignias</h3>
@@ -100,7 +104,7 @@
               </td>
               <td>
                 <form action='/modify_badge/{{project.id}}/{{badge.id}}/' method='GET'>
-                  <button class="btn btn-block bg-gradient-info btn-xs">Modificar</button>
+                  <button class="btn btn-block btn-primary btn-xs">Modificar</button>
                 </form>
               </td>
             </tr>
@@ -113,7 +117,6 @@
   </div>
 
 <div class="card-deck" style="margin: 10px;">
-    <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
     <div class="card card-primary">
       <div class="card-header">
         <h3 class="card-title">{{ project.name }} - Reglas de puntaje </h3>
@@ -161,7 +164,7 @@
               </td>
               <td>
                 <form action='/modify_score/{{project.id}}/{{score.id}}/' method='GET'>
-                  <button class="btn btn-block bg-gradient-info btn-xs">Modificar</button>
+                  <button class="btn btn-block btn-primary btn-xs">Modificar</button>
                 </form>
               </td>
             </tr>
@@ -177,10 +180,10 @@
 <!-- Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-label="Modal" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-content" >
+      <div class="modal-header" style="color: #fff; background-color: #0069d9;}">
         <h5 class="modal-title">Confirmar eliminación</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Cancelar">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cancelar" style="color: #fff;}">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -190,7 +193,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary bg-gradient-danger" data-dismiss="modal">Cancelar</button>
         <form id="deleteForm" action='' method='GET'>
-          <button class="btn btn-primary">Confirmar eliminación</button>
+          <button class="btn btn-success">Confirmar eliminación</button>
         </form>
       </div>
     </div>

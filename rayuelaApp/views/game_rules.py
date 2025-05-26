@@ -264,7 +264,7 @@ def process_modify_score(request):
                 score.name = request.POST.get('name')
                 score.points = request.POST.get('points')
                 score.save()
-                messages.success(request, 'Se ha creado correctamente')
+                messages.success(request, 'Se ha modificado correctamente')
                 return redirect(reverse('game_rules', kwargs={'id': request.POST['project_id']}))
         return redirect ('home')
     return redirect ('index')
