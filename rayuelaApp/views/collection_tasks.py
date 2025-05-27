@@ -11,9 +11,5 @@ def automatic_task_generation(request, id):
                 project = Project.objects.get(id=id)
                 project.automatic_task_generation()
                 return redirect(reverse('collection_tasks', kwargs={'id': id}))
-            # else:
-            #     return render(request, 'rayuelaApp/task/create_task_type.html',
-            #                   {'nav': 'block', 'create_task_type': System.get_navbar_color,
-            #                    'project': Project.objects.get(id=id)})
         return redirect ('home')
     return redirect ('index')

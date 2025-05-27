@@ -16,8 +16,7 @@ class TimeRestriction(models.Model):
         db_table='time_restriction'
 
     def __str__(self):
-        return f'{self.name}, {self.date_from}, {self.date_to}, {self.hour_from}, {self.hour_to}'
-
+        return f'{self.name}, desde {self.date_from.strftime("%d-%m-%Y")} {self.hour_from} hasta {self.date_to.strftime("%d-%m-%Y")} {self.hour_to}'
 
     def is_valid_time(self,date):  
         return ( date>= (self.date_from.strftime("%Y-%m-%d")+ ' ' + self.hour_from) and date  <= (self.date_to.strftime("%Y-%m-%d") + ' ' + self.hour_to) and self.is_valid_day())

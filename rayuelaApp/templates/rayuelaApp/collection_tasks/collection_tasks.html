@@ -27,8 +27,8 @@
               <th style="width: 200px">Tipo de tarea</th>
               <th style="width: 200px">Área</th>
               <th style="width: 200px">Intervalo de tiempo</th>
-              <th style="width: 5px">Hecha</th>
-              <th style="width: 10px">Quitar</th>
+              <th style="width: 5px">Completada</th>
+              <th style="width: 10px">Eliminar</th>
               <th style="width: 10px">Modificar</th>
             </tr>
           </thead>
@@ -39,7 +39,7 @@
               <td>{{ collection_task.task_type }}</td>
               <td>{{ collection_task.sub_area.number }}</td>
               <td>{{ collection_task.time_restriction }}</td>
-              <td>{{ collection_task.completed }}</td>
+              <td>{% if collection_task.completed %} Sí {% else %} No {% endif %}</td>
               <td><button  onclick="send_game_element_id_2('{{ challenge.id }}','#change_state');" class="btn btn-block bg-gradient-danger btn-xs">{% if challenge.public %}Eliminar{% else %}Eliminar{% endif %}</button></td>
               <td><button  onclick="send_game_element_id_2('{{ challenge.id }}','#modify');" class="btn btn-block bg-gradient-info btn-xs">Modificar</button></td>
             </tr>
