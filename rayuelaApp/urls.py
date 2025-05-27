@@ -52,6 +52,7 @@ urlpatterns = [
     path('edit_project/',project.edit_project,name='register_project'),
     path('collection_tasks/<int:id>/', project.collection_tasks, name='collection_tasks'),
     path('automatic_task_generation/<int:id>/', collection_tasks.automatic_task_generation, name='automatic_task_generation'),
+    path('delete_collection_task/<int:project_id>/<int:collection_task_id>/', collection_tasks.delete_collection_task, name='delete_collection_task'),
     #path('create_badge/',badge.badge,name='create_badge'),
     #path('process_badge/',badge.process_badge,name='process_badge'),
     path('change_state/',game_elements.change_state,name='change_state'),
@@ -86,4 +87,3 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]
-

@@ -6,12 +6,13 @@
 
 {% block content %}
 <div class="card-deck">
-    <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
     <div class="card card-primary">
       <div class="card-header">
         <h3 class="card-title">{{ project.name }} - Tareas de recolección </h3>
       </div>
       <div class="card-body">
+        <label class="valid-feedback d-block" style="font-size: 18px;">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
+        <label class="invalid-feedback d-block" style="font-size: 18px;">{% for message in messages %}{% if message.tags == 'error' %}*{{ message }}{% endif %}{% endfor %}</label>
         <div>
             <form id="automatic_task_generation"  method="post" action="/automatic_task_generation/{{project.id}}/">
                 {% csrf_token %}
@@ -27,7 +28,7 @@
               <th style="width: 200px">Tipo de tarea</th>
               <th style="width: 200px">Área</th>
               <th style="width: 200px">Intervalo de tiempo</th>
-              <th style="width: 5px">Completada</th>
+              <th style="width: 5px">Completa</th>
               <th style="width: 10px">Eliminar</th>
               <th style="width: 10px">Modificar</th>
             </tr>
@@ -40,8 +41,18 @@
               <td>{{ collection_task.sub_area.number }}</td>
               <td>{{ collection_task.time_restriction }}</td>
               <td>{% if collection_task.completed %} Sí {% else %} No {% endif %}</td>
-              <td><button  onclick="send_game_element_id_2('{{ challenge.id }}','#change_state');" class="btn btn-block bg-gradient-danger btn-xs">{% if challenge.public %}Eliminar{% else %}Eliminar{% endif %}</button></td>
-              <td><button  onclick="send_game_element_id_2('{{ challenge.id }}','#modify');" class="btn btn-block bg-gradient-info btn-xs">Modificar</button></td>
+              <td>
+                  <button class="btn btn-block bg-gradient-danger btn-xs" data-toggle="modal" data-target="#deleteModal"
+                          onclick="deleteModal('#{{collection_task.id}}', '/delete_collection_task/{{project.id}}/{{collection_task.id}}/')"
+                   {% if collection_task.completed %} disabled {% endif %}>
+                      Eliminar
+                  </button>
+              </td>
+              <td>
+                <form action='/modify_score/{{project.id}}/{{score.id}}/' method='GET'>
+                  <button class="btn btn-block btn-primary btn-xs" {% if collection_task.completed %} disabled {% endif %}>Modificar</button>
+                </form>
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -49,25 +60,50 @@
         </div>
       </div>
     </div>
-        <form id="change_state"  method="post" action="/change_state/"   > {% csrf_token %}
-          <input type="hidden" id="ge_id" name="ge_id" />
-        </form>
-        <form id="modify"  method="post" action="/modify/"   > {% csrf_token %}
-            <input type="hidden" id="ge_id_" name="ge_id_" />
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-label="Modal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" >
+      <div class="modal-header" style="color: #fff; background-color: #0069d9;}">
+        <h5 class="modal-title">Confirmar eliminación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cancelar" style="color: #fff;}">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 18px"><u>Atención</u>: se va a eliminar la tarea de recolección <b><i id="modal_name" class="fw-bold"></i></b></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary bg-gradient-danger" data-dismiss="modal">Cancelar</button>
+        <form id="deleteForm" action='' method='GET'>
+          <button class="btn btn-success">Confirmar eliminación</button>
         </form>
       </div>
     </div>
   </div>
+</div>
+
 {% endblock %}
+
 {% block scripts %}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
 <script src="{% static 'dist/js/datatable_es.js' %}"></script>
 <script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
 <script src="{% static 'dist/js/showconfirmation.js' %}"></script>
-<script>$(document).ready( function () {
+<script>
+$(document).ready( function () {
   $('#table').DataTable({
     "language": lang
   });
-} ); </script>
+} );
+
+function deleteModal(score, action) {
+    $("#modal_name").html(score);
+    $("#deleteForm").attr("action", action);
+}
+
+</script>
 {% endblock %}
