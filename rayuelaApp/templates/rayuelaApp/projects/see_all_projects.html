@@ -9,7 +9,7 @@
 {% include '../modal/public_project_modal.html' %}
 
   <div class="col-md-6">
-    <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
+    <label class="valid-feedback d-block" style="font-size: 18px;">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Proyectos Disponibles</h3>

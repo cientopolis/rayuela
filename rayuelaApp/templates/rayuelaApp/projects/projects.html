@@ -76,7 +76,7 @@
 {% endif %} 
 
 <div class="container">
-  <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
+  <label class="valid-feedback d-block" style="font-size: 18px;">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
   {% block content_header %}<h3>Mis últimos proyectos asignados</h3>{% endblock %}
   <div class="card-group">
     

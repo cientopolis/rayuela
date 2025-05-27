@@ -16,8 +16,8 @@
         <p class="login-box-msg">Datos</p>
   
         <form action="/register_admin/" id='send' method="post">{% csrf_token %}
-          <label class="invalid-feedback d-block">{% for message in messages %}{% if message.tags == 'error' %}*{{ message }}{% endif %}{% endfor %}</label>
-          <label class="valid-feedback d-block">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
+          <label class="invalid-feedback d-block style="font-size: 18px;"">{% for message in messages %}{% if message.tags == 'error' %}*{{ message }}{% endif %}{% endfor %}</label>
+          <label class="valid-feedback d-block" style="font-size: 18px;">{% for message in messages %}{% if message.tags == 'success' %}*{{ message }}{% endif %}{% endfor %}</label>
           <div class="input-group mb-3">
             <input type="text" name='name' class="form-control" placeholder="Nombre Completo">
             <div class="input-group-append">
