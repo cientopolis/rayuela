@@ -15,6 +15,3 @@ class CollectionTask(models.Model):
         verbose_name='Tarea de recolección'
         verbose_name_plural="Tareas de recolección"
         db_table = 'collection_task'
-
-    def __str__(self):
-        return f'{self.task_type}, {self.sub_area}, {self.time_restriction}'

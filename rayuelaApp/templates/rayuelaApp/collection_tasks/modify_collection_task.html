@@ -1,0 +1,65 @@
+{% extends 'rayuelaApp/base/base.html' %}
+{% load static %}
+{% block title %}
+  Modificar tarea de recolección
+{% endblock %}
+
+{% block link %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin=""/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-6 mb-5 mt-0">
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">{{project.name}} - Modificar tarea de recolección</h3>
+      </div>
+      <!-- /.card-header -->
+      <!-- form start -->
+      <form action="/process_modify_collection_task/" id="send" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+          <label class="valid-feedback d-block" style="font-size: 18px;">{% for message in messages %}{% if message.tags == 'error' %}*{{ message }}{% endif %}{% endfor %}</label>
+          <div class="col-12 col-md-12">
+            <!-- Input oculto pero necesario para mantenerse en el contexto correcto de proyecto -->
+            <input type='hidden' class="form-control" id='project_id' name='project_id' value="{{ project.id }}">
+            <input type='hidden' class="form-control" id='collection_task_id' name='collection_task_id' value="{{ collection_task.id }}">
+            <div id="task_types" class="form-group">
+              <label id="label_task_types">Tipos de tarea</label>
+              <select id="select_task_types" name="select_task_types" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+                {% for task_type in project.task_types.all %}
+                <option value="{{task_type.id}}" {% if collection_task.task_type.id == task_type.id %} selected {% endif %}>{{ task_type.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div id="time_restrictions" class="form-group">
+              <label id="label_time_restrictions">Intervalos de tiempo</label>
+              <select id="select_time_restrictions" name="select_time_restrictions" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+                {% for time_restriction in project.time_restriction.all %}
+                <option value="{{time_restriction.id}}" {% if collection_task.time_restriction.id == time_restriction.id %} selected {% endif %}>{{ time_restriction.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div id="areas" class="form-group">
+              <label id="label_areas">Áreas</label>
+              <select id="select_areas" name="select_areas" class="form-control select2-info" data-dropdown-css-class="select2-info" style="width: 100%;" required>
+                {% for area in sub_areas.all %}
+                <option value="{{area.id}}" {% if collection_task.sub_area.id == area.id %} selected {% endif %}>{{ area.number }}</option>
+                {% endfor %}
+              </select>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <a href="/collection_tasks/{{project.id}}/" class="btn btn-danger" role="button">Cancelar</a>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'dist/js/sweetalert2.all.min.js' %}"></script>
+{% endblock %}
