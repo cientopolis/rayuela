@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
@@ -21,12 +22,10 @@ class VolunteerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Volunteer
-        fields = ['id', 'projects', 'username', 'email', 'profile_image', 'first_name', 'last_name']
+        fields = ['id', 'projects', 'username', 'email', 'password', 'profile_image', 'first_name', 'last_name']
 
     def create(self, validated_data):
-        user = Volunteer.objects.create(email=validated_data['email'], username=validated_data['username'])
-        user.set_password(validated_data['password'])
-        user.save()
+        user = Volunteer.objects.create(email=validated_data['email'], username=validated_data['username'], password=make_password(validated_data['password']))
         return user
 
 
