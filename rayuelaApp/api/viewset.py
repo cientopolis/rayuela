@@ -10,7 +10,9 @@ from rest_framework.response import Response
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
 from rayuelaApp.models.check_in import CheckIn
-from rayuelaApp.api.serializers import VolunteerSerializer, ProjectSerializer, CheckinSerializer
+from rayuelaApp.models.collection_task import CollectionTask
+from rayuelaApp.api.serializers import VolunteerSerializer, ProjectSerializer, CheckinSerializer, \
+    CollectionTaskSerializer
 
 
 class LoginViewSet(viewsets.ModelViewSet):
@@ -85,3 +87,18 @@ class CheckinViewset(viewsets.ModelViewSet):
         user = self.request.user
         project = self.request.query_params.get('project_id', 0)
         return CheckIn.objects.filter(user=user.id, project=project)
+
+
+class ProjectCollectionTasksViewSet(viewsets.ModelViewSet):
+    serializer_class = CollectionTaskSerializer
+    permission_classes = ()  # Al estar vacío no se necesita permiso para acceder a esta vista
+
+    def get_queryset(self):
+        tasks_project = []
+        tasks = CollectionTask.objects.all()
+        project = Project.objects.filter(available=True, id=self.request.query_params.get('project_id', 0))
+        for task in tasks:
+            for collection_task in project.values('collection_tasks'):
+                if task.id == collection_task['collection_tasks']:
+                    tasks_project.append(task)
+        return tasks_project
