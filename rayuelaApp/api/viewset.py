@@ -102,3 +102,9 @@ class ProjectCollectionTasksViewSet(viewsets.ModelViewSet):
                 if task.id == collection_task['collection_tasks']:
                     tasks_project.append(task)
         return tasks_project
+
+class CollectionTaskViewSet(viewsets.ModelViewSet):
+    serializer_class = CollectionTaskSerializer
+    permission_classes = ()  # Al estar vacío no se necesita permiso para acceder a esta vista
+
+    queryset = CollectionTask.objects.all()
