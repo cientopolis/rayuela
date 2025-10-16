@@ -2,8 +2,16 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
+from rayuelaApp.models.task_type import TaskType
 from rayuelaApp.models.check_in import CheckIn
 from rayuelaApp.models.collection_task import CollectionTask
+
+class TaskTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TaskType
+        fields = '__all__'
+
 
 class ProjectSerializer(serializers.ModelSerializer):
     admins = serializers.SlugRelatedField(
@@ -11,6 +19,8 @@ class ProjectSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='username'
      )
+
+    task_types = TaskTypeSerializer(many=True, read_only=True)
 
     class Meta:
         model = Project
