@@ -3,6 +3,7 @@ from rest_framework import serializers
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
 from rayuelaApp.models.task_type import TaskType
+from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.models.check_in import CheckIn
 from rayuelaApp.models.collection_task import CollectionTask
 
@@ -10,6 +11,13 @@ class TaskTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskType
+        fields = '__all__'
+
+
+class ProjectSubAreaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProjectSubArea
         fields = '__all__'
 
 

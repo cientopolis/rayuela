@@ -1,8 +1,6 @@
-from crypt import methods
 from distutils.util import strtobool
 
-#from drf_yasg.openapi import Response
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -11,8 +9,9 @@ from users.models import Volunteer
 from rayuelaApp.models.project import Project
 from rayuelaApp.models.check_in import CheckIn
 from rayuelaApp.models.collection_task import CollectionTask
+from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.api.serializers import VolunteerSerializer, ProjectSerializer, CheckinSerializer, \
-    CollectionTaskSerializer
+    CollectionTaskSerializer, ProjectSubAreaSerializer
 
 
 class LoginViewSet(viewsets.ModelViewSet):
@@ -108,3 +107,12 @@ class CollectionTaskViewSet(viewsets.ModelViewSet):
     permission_classes = ()  # Al estar vacío no se necesita permiso para acceder a esta vista
 
     queryset = CollectionTask.objects.all()
+
+
+class ProjectSubAreaViewSet(viewsets.ModelViewSet):
+    serializer_class = ProjectSubAreaSerializer
+    permission_classes = ()  # Al estar vacío no se necesita permiso para acceder a esta vista
+
+    def get_queryset(self):
+        project = Project.objects.filter(available=True, id=self.request.query_params.get('project_id', 0))
+        return ProjectSubArea.objects.filter(area_id__in=project.values('area_id'))
