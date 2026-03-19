@@ -48,10 +48,21 @@ class VolunteerSerializer(serializers.ModelSerializer):
 
 
 class CheckinSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field='username'
+     )
+
+    def create(self, validated_data):
+        user = Volunteer.objects.get(id=validated_data['user'])
+        checkin = CheckIn.objects.create(user=user, latitude=validated_data['latitude'], longitude=validated_data['longitude'], datetime=validated_data['datetime'], project=validated_data['project'], task_type=validated_data['task_type'])
+        return checkin
 
     class Meta:
         model = CheckIn
         fields = '__all__'
+
 
 class CollectionTaskSerializer(serializers.ModelSerializer):
     task_type = serializers.SlugRelatedField(

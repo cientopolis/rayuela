@@ -87,6 +87,8 @@ class CheckinViewset(viewsets.ModelViewSet):
         project = self.request.query_params.get('project_id', 0)
         return CheckIn.objects.filter(user=user.id, project=project)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user.id)
 
 class ProjectCollectionTasksViewSet(viewsets.ModelViewSet):
     serializer_class = CollectionTaskSerializer
