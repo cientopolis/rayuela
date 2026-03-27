@@ -1,7 +1,8 @@
 from rest_framework.routers import DefaultRouter
 from rayuelaApp.api.viewset import (LoginViewSet, RegisterViewSet, ProjectsViewSet, ProjectsWithoutTheUserViewSet,
-                                    VolunteerViewSet, CheckinViewset, ProjectCollectionTasksViewSet, CollectionTaskViewSet,
-                                    ProjectSubAreaViewSet)
+                                    VolunteerViewSet, CheckinViewset, ProjectCollectionTasksViewSet,
+                                    CollectionTaskViewSet,
+                                    ProjectSubAreaViewSet, GameMoveViewSet)
 
 router = DefaultRouter()
 
@@ -14,5 +15,6 @@ router.register(r'volunteers', VolunteerViewSet, basename='volunteers')
 router.register(r'checkin', CheckinViewset, basename='checkin')
 router.register(r'sub_area', ProjectSubAreaViewSet, basename='sub_area')
 router.register(r'collection_tasks', CollectionTaskViewSet, basename='collection_tasks')
+router.register(r'game_move', GameMoveViewSet, basename='game_move')
 
 urlpatterns = router.urls

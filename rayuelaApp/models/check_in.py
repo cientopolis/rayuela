@@ -10,7 +10,7 @@ class CheckIn(models.Model):
     project = models.ForeignKey(Project, on_delete=models.DO_NOTHING)
     latitude = models.CharField(blank=False, null=False, max_length=500)
     longitude = models.CharField(blank=False, null=False, max_length=500)
-    task_type = models.ForeignKey(TaskType, on_delete=models.DO_NOTHING, default="default")
+    task_type = models.ForeignKey(TaskType, on_delete=models.DO_NOTHING)
     datetime = models.DateTimeField(null=False, blank=False)
 
     class Meta:

@@ -11,7 +11,7 @@ from rayuelaApp.models.check_in import CheckIn
 from rayuelaApp.models.collection_task import CollectionTask
 from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.api.serializers import VolunteerSerializer, ProjectSerializer, CheckinSerializer, \
-    CollectionTaskSerializer, ProjectSubAreaSerializer
+    CollectionTaskSerializer, ProjectSubAreaSerializer, GameMoveSerializer
 
 
 class LoginViewSet(viewsets.ModelViewSet):
@@ -90,6 +90,7 @@ class CheckinViewset(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user.id)
 
+
 class ProjectCollectionTasksViewSet(viewsets.ModelViewSet):
     serializer_class = CollectionTaskSerializer
     permission_classes = ()  # Al estar vacío no se necesita permiso para acceder a esta vista
@@ -118,3 +119,17 @@ class ProjectSubAreaViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         project = Project.objects.filter(available=True, id=self.request.query_params.get('project_id', 0))
         return ProjectSubArea.objects.filter(area_id__in=project.values('area_id'))
+
+
+class GameMoveViewSet(viewsets.ModelViewSet):
+    serializer_class = GameMoveSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        latitude = self.request.query_params.get('latitude', "")
+        longitude = self.request.query_params.get('longitude', "")
+        datetime = self.request.query_params.get('datetime', 0)
+        project = self.request.query_params.get('project', 0)
+        task_type = self.request.query_params.get('task_type', 0)
+        serializer.save(user=self.request.user.id, latitude=latitude, longitude=longitude, datetime=datetime, project=project, task_type=task_type)
+
