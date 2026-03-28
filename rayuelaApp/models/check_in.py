@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.db import models
 
 from rayuelaApp.models.project import Project
@@ -11,7 +13,7 @@ class CheckIn(models.Model):
     latitude = models.CharField(blank=False, null=False, max_length=500)
     longitude = models.CharField(blank=False, null=False, max_length=500)
     task_type = models.ForeignKey(TaskType, on_delete=models.DO_NOTHING)
-    datetime = models.DateTimeField(null=False, blank=False)
+    datetime = models.DateTimeField(null=False, blank=False, default=timezone.now)
 
     class Meta:
         verbose_name = 'CheckIn'

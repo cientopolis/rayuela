@@ -108,7 +108,7 @@ class GameMoveSerializer(serializers.ModelSerializer):
         project = Project.objects.filter(id=validated_data['project'])
         task_type = TaskType.objects.filter(id=validated_data['task_type'])
         checkin = CheckIn.objects.create(user=user, latitude=validated_data['latitude'], longitude=validated_data['longitude'],
-                                         datetime=validated_data['datetime'], project=project[0], task_type=task_type[0])
+                                         datetime=str(validated_data['datetime']), project=project.first(), task_type=task_type.first())
         collection_task = None
         points = 0
         badge = None
