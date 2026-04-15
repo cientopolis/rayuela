@@ -150,3 +150,23 @@ class GameMoveSerializer(serializers.ModelSerializer):
         competition.save()
 
         return game_move
+
+class GameProfileSerializer(serializers.ModelSerializer):
+
+    user = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field='username'
+     )
+
+    class Meta:
+        model = GameProfile
+        fields = '__all__'
+
+class CompetitionSerializer(serializers.ModelSerializer):
+
+    game_profile = GameProfileSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Competition
+        fields = '__all__'

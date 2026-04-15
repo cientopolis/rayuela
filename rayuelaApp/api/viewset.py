@@ -8,10 +8,12 @@ from rest_framework.response import Response
 from users.models import Volunteer
 from rayuelaApp.models.project import Project
 from rayuelaApp.models.check_in import CheckIn
+from rayuelaApp.models.game_move import GameMove
+from rayuelaApp.models.leaderboard import Competition
 from rayuelaApp.models.collection_task import CollectionTask
 from rayuelaApp.models.project_subarea import ProjectSubArea
 from rayuelaApp.api.serializers import VolunteerSerializer, ProjectSerializer, CheckinSerializer, \
-    CollectionTaskSerializer, ProjectSubAreaSerializer, GameMoveSerializer
+    CollectionTaskSerializer, ProjectSubAreaSerializer, GameMoveSerializer, CompetitionSerializer
 
 
 class LoginViewSet(viewsets.ModelViewSet):
@@ -73,23 +75,24 @@ class ProjectsWithoutTheUserViewSet(viewsets.ModelViewSet):
 
 
 class CheckinViewset(viewsets.ModelViewSet):
-    """
-    Necesita envío de parametro en GET{id} \n
-    - project_id: number
-    - Parametro y valor en URL: ?project_id=number_id
-    """
+    # """
+    # Necesita envío de parametro en GET{id} \n
+    # - project_id: number
+    # - Parametro y valor en URL: ?project_id=number_id
+    # """
     serializer_class = CheckinSerializer
     permission_classes = [IsAuthenticated]
 
+    queryset = CheckIn.objects.all()
+
     # Devuelve checkins de project y user actuales
-    def get_queryset(self):
-        user = self.request.user
-        project = self.request.query_params.get('project_id', 0)
-        return CheckIn.objects.filter(user=user.id, project=project)
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     project = self.request.query_params.get('project_id', 0)
+    #     return CheckIn.objects.filter(user=user.id, project=project)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user.id)
-
 
 class ProjectCollectionTasksViewSet(viewsets.ModelViewSet):
     serializer_class = CollectionTaskSerializer
@@ -125,6 +128,10 @@ class GameMoveViewSet(viewsets.ModelViewSet):
     serializer_class = GameMoveSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        game_move = GameMove.objects.filter(checkin=self.request.query_params.get('checkin_id', 0))
+        return game_move
+
     def perform_create(self, serializer):
         latitude = self.request.query_params.get('latitude', "")
         longitude = self.request.query_params.get('longitude', "")
@@ -133,3 +140,10 @@ class GameMoveViewSet(viewsets.ModelViewSet):
         task_type = self.request.query_params.get('task_type', 0)
         serializer.save(user=self.request.user.id, latitude=latitude, longitude=longitude, datetime=datetime, project=project, task_type=task_type)
 
+class CompetitionViewSet(viewsets.ModelViewSet):
+    serializer_class = CompetitionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        project_id = Project.objects.filter(available=True, id=self.request.query_params.get('project_id', 0))[0].id
+        return Competition.objects.filter(project=project_id).order_by('-total_points')
